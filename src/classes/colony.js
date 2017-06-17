@@ -103,11 +103,13 @@ export default class Colony extends Phaser.Sprite {
       );
       bacteria.name = `Bacteria-${bacteries.length}`;
       bacteria.body.collideWorldBounds = true;
-      // bacteria.body.bounce.setTo(0.8, 0.8);
-      bacteria.body.velocity.setTo(
-        10 + Math.random() * 40,
-        10 + Math.random() * 40
-      );
+
+      const Xvector = ((target.x - bacteria.x) * 0.2) + Math.random() * 100;
+      const Yvector = ((target.y - bacteria.y) * 0.2) + Math.random() * 100;
+      console.warn('Xvector', Xvector, 'Yvector', Yvector)
+      bacteria.body.allowGravity = true;  
+      bacteria.body.velocity.setTo(Xvector, Yvector);
+
       bacteria.frame = frame;
       bacteria.scale.setTo(0.2, 0.2);
     }
