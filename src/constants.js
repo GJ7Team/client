@@ -6,3 +6,8 @@ export const STATES = {
 };
 
 export const GLOBAL_SPEED = 1;
+
+export const WORLD_SIZE = {
+  height: 414,
+  width: 736,
+};

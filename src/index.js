@@ -7,10 +7,7 @@ import PhaserInput from 'lib/PhaserInput';
 
 import './store';
 
-const WORLD_SIZE = {
-  height: 414,
-  width: 736,
-};
+import { WORLD_SIZE } from './constants';
 
 const start = game => {
   window.onload = game;
