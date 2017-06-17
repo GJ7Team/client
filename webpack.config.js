@@ -6,7 +6,7 @@ module.exports = function() {
     bail: true,
     devtool: false,
     entry: {
-    	app: "./src/index.js"
+      app: "./src/index.js"
     },
     output: {
       path: resolve('./dist'),
