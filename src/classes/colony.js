@@ -14,7 +14,27 @@ const TYPES = {
 
 function collisionHandler(colony, bacteria) {
   console.warn('collisionHandler');
-  bacteria.kill();
+
+  switch (colony.type) {
+    case TYPES.ally:
+      colony._changePower(1);
+      break;
+    case TYPES.neutral:
+      colony._changePower(1);
+      colony._changeType(TYPES.ally);
+      break;
+    case TYPES.enemy:
+      colony._changePower(-1);
+      if (colony.power === 0) {
+        colony._changeType(TYPES.neutral);
+      }
+      break;
+    default:
+      console.error('[bacterium] Unknown type %s', colony.type);
+      break;
+  }
+
+  setTimeout(() => bacteria.kill(), 1);
 }
 
 function createBacteria(x, y, game, bacteries, target, frame) {
@@ -55,6 +75,28 @@ export default class Colony extends Phaser.Sprite {
     this.text.x = Math.floor(this.x + this.width / 2);
     this.text.y = Math.floor(this.y + this.height / 2);
     this.text.setText(this.power);
+
+    this.colides.forEach(({ colony, bacteries }) => {
+      this.game.physics.arcade.collide(
+        colony,
+        bacteries,
+        // Atack collistion
+        // We will count damage here
+        collisionHandler,
+        null,
+        this
+      );
+    });
+  }
+
+  _changeType(newType) {
+    // TODO SERVER
+    console.error(
+      '[bacterium] Colony ownership change from %s to %s',
+      this.type,
+      newType
+    );
+    this.type = newType;
   }
 
   _createCounter() {
@@ -120,18 +162,6 @@ export default class Colony extends Phaser.Sprite {
 
       this.colides.push({ colony: target, bacteries });
     }
-  }
-
-  _update() {
-    this.colides.forEach(({ colony, bacteries }) => {
-      this.game.physics.arcade.collide(
-        colony,
-        bacteries,
-        collisionHandler,
-        null,
-        this
-      );
-    });
   }
 
   _canAttack() {

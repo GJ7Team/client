@@ -67,11 +67,8 @@ export default {
     this._initUserInteractions();
   },
 
-  update: function () {
+  update: function() {
     this.captureManager.update();
-    this.colonies.forEach((colony) => {
-      colony._update.call(colony);
-    });
   },
 
   render: function() {
