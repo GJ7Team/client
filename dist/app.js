@@ -127,6 +127,8 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__global_playState__ = __webpack_require__(/*! ./global/playState */ 0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__global_videoDemoState__ = __webpack_require__(/*! ./global/videoDemoState */ 2);
+
 
 
 const WORLD_SIZE = {
@@ -138,8 +140,43 @@ window.onload = () => {
   const game = new Phaser.Game(WORLD_SIZE.width, WORLD_SIZE.height, Phaser.AUTO, 'game');
 
   game.state.add('play', __WEBPACK_IMPORTED_MODULE_0__global_playState__["a" /* default */]);
+  game.state.add('video', __WEBPACK_IMPORTED_MODULE_1__global_videoDemoState__["a" /* default */]);
   game.state.start('play');
 };
+
+/***/ }),
+/* 2 */
+/* exports provided: default */
+/* exports used: default */
+/*!**************************************!*\
+  !*** ./src/global/videoDemoState.js ***!
+  \**************************************/
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var video1;
+var video2;
+/* harmony default export */ __webpack_exports__["a"] = ({
+  preload: function () {
+    this.game.add.text(100, 100, "Loading videos ...", { font: "65px Arial", fill: "#ff0044" });
+
+    this.game.load.video('liquid', 'assets/video/skull.mp4');
+    this.game.load.video('space', 'assets/video/wormhole.mp4');
+  },
+
+  create: function () {
+    video1 = this.game.add.video('space');
+    video2 = this.game.add.video('liquid');
+
+    video1.play(true);
+    video2.play(true);
+
+    //  x, y, anchor x, anchor y, scale x, scale y
+    video1.addToWorld(400, 300, 0.5, 0.5);
+
+    video2.addToWorld(780, 580, 1, 1, 0.5, 0.5);
+  }
+});
 
 /***/ })
 /******/ ]);

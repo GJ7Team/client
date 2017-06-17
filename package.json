@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack --watch",
     "build": "webpack",
-    "serve": "browser-sync start --server --files=\"**/*.js\"",
+    "serve": "browser-sync start --server --files=src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
