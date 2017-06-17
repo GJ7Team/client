@@ -17,24 +17,20 @@ function collisionHandler(colony, bacteria) {
   bacteria.kill();
 }
 
- function createBacteria(x, y, game, bacteries, target, frame) {
-    var bacteria = bacteries.create(
-      x,
-      y,
-      'bacteria'
-    );
-    bacteria.name = `Bacteria-${bacteries.length}`;
-    bacteria.body.collideWorldBounds = true;
+function createBacteria(x, y, game, bacteries, target, frame) {
+  var bacteria = bacteries.create(x, y, 'bacteria');
+  bacteria.name = `Bacteria-${bacteries.length}`;
+  bacteria.body.collideWorldBounds = true;
 
-    const Xvector = ((target.x - bacteria.x) * 0.2) + Math.random() * 100;
-    const Yvector = ((target.y - bacteria.y) * 0.2) + Math.random() * 100;
-    // console.warn('Xvector', Xvector, 'Yvector', Yvector)
-    bacteria.body.allowGravity = true;  
-    bacteria.body.velocity.setTo(Xvector, Yvector);
+  const Xvector = (target.x - bacteria.x) * 0.2 + Math.random() * 100;
+  const Yvector = (target.y - bacteria.y) * 0.2 + Math.random() * 100;
+  // console.warn('Xvector', Xvector, 'Yvector', Yvector)
+  bacteria.body.allowGravity = true;
+  bacteria.body.velocity.setTo(Xvector, Yvector);
 
-    bacteria.frame = frame;
-    bacteria.scale.setTo(0.2, 0.2);
-  }
+  bacteria.frame = frame;
+  bacteria.scale.setTo(0.2, 0.2);
+}
 
 export default class Colony extends Phaser.Sprite {
   constructor(game, x, y, imageName, type, graphicsCanvas) {
@@ -111,29 +107,37 @@ export default class Colony extends Phaser.Sprite {
       this._stopShowingAttackDirection();
 
       setTimeout(() => {
-        bacteries.forEach((bacteria) => {
-           bacteria.body.velocity.setTo(0,0);
-          this.game.physics.arcade.accelerateToObject(bacteria, target, 60);
-        }, this.game.physics.arcade, false, 200);
-
+        bacteries.forEach(
+          bacteria => {
+            bacteria.body.velocity.setTo(0, 0);
+            this.game.physics.arcade.accelerateToObject(bacteria, target, 60);
+          },
+          this.game.physics.arcade,
+          false,
+          200
+        );
       }, 700);
 
       this.colides.push({ colony: target, bacteries });
     }
-
-   
   }
 
   _update() {
     this.colides.forEach(({ colony, bacteries }) => {
-      this.game.physics.arcade.collide(colony, bacteries, collisionHandler, null, this);
+      this.game.physics.arcade.collide(
+        colony,
+        bacteries,
+        collisionHandler,
+        null,
+        this
+      );
     });
   }
 
   _canAttack() {
-    // return true;
-    const isAlly = this.type === TYPES.ally;
-    return isAlly && this.power >= MIN_ATTACK_REQUIREMENT;
+    return true;
+    // const isAlly = this.type === TYPES.ally;
+    // return isAlly && this.power >= MIN_ATTACK_REQUIREMENT;
   }
 
   _colonyIsActive() {
@@ -165,14 +169,20 @@ export default class Colony extends Phaser.Sprite {
 
     this.graphicsCanvas.clear();
     this.graphicsCanvas.lineStyle(10, 0xffd900, 1);
-    this.graphicsCanvas.moveTo(this.x + this.width / 2 , this.y + this.height / 2);
+    this.graphicsCanvas.moveTo(
+      this.x + this.width / 2,
+      this.y + this.height / 2
+    );
   }
 
   _updateAttackDirection(event) {
     if (!this._canAttack()) {
       return false;
     }
-    this.graphicsCanvas.moveTo(this.x + this.width / 2 , this.y + this.height / 2);
+    this.graphicsCanvas.moveTo(
+      this.x + this.width / 2,
+      this.y + this.height / 2
+    );
     this.graphicsCanvas.lineTo(event.x, event.y);
   }
 
