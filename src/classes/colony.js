@@ -16,6 +16,10 @@ function enemyCollisionHandler(colony, bacteria) {
       if (colony.power === 0) {
         colony._changeType(COLONY_TYPES.neutral);
       }
+      if (colony.power < 0) {
+        colony.power = -colony.power;
+        colony._changeType(COLONY_TYPES.enemy);
+      }
       break;
     case COLONY_TYPES.neutral:
       colony._changePower(1);
@@ -47,6 +51,10 @@ function collisionHandler(colony, bacteria) {
       colony._changePower(-1);
       if (colony.power === 0) {
         colony._changeType(COLONY_TYPES.neutral);
+      }
+      if (colony.power < 0) {
+        colony.power = -colony.power;
+        colony._changeType(COLONY_TYPES.ally);
       }
       break;
     default:
@@ -176,7 +184,7 @@ export default class Colony extends Phaser.Sprite {
   };
 
   _hasSpawn = () => {
-    return isFinite(this.spawnInterval);
+    return this.spawnInterval > 0;
   };
 
   _enemyAttack(target) {

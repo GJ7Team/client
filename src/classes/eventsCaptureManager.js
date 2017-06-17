@@ -13,7 +13,11 @@ export default class EventsCaptureManager {
     this.enableInput();
 
     // FAKE SERVER IVENTS EMITER
+    let interval = 500;
     const superAI = () => {
+      if (interval < 4000) {
+        interval = interval + 100;
+      }
       const enemys = [];
       const neutrals = [];
       const allys = [];
@@ -26,12 +30,20 @@ export default class EventsCaptureManager {
       this.colonies.forEach(
         c => (c.type === COLONY_TYPES.ally ? allys.push(c) : null)
       );
-      if (enemys[0]) {
-        enemys[0]._enemyAttack(neutrals[0] || allys[0]);
+      if (enemys.length) {
+        const enemy = enemys.sort((a, b) => b.power - a.power)[0];
+        const ally = allys.sort((a, b) => a.power - b.power)[0];
+        if (neutrals.length) {
+          neutrals.forEach(n => {
+            enemy._enemyAttack(n);
+          });
+        } else {
+          enemy._enemyAttack(ally);
+        }
       }
+      setTimeout(superAI, interval);
     };
     superAI();
-    setInterval(superAI, 3000);
   }
 
   checkWinState() {
