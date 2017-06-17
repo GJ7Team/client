@@ -10,6 +10,17 @@ function goToVideoState() {
   this.game.state.start(STATES.VIDEO);
 }
 
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+const BG_SET = [
+  'bg-bacteria.frag',
+  'bg-hypnotic.frag',
+  'bg-microflora.frag',
+  'bg-radiator.frag',
+];
+
 export default {
   preload: function() {
     this.button = this.game.load.spritesheet(
@@ -20,6 +31,13 @@ export default {
     );
 
     // background
+    BG_SET.forEach(bgSrc => {
+      this.game.load.shader(
+        bgSrc.replace(/.frag/, ''),
+        `assets/shaders/${bgSrc}`
+      );
+    });
+
     this.game.load.image('background', 'assets/images/background.png');
 
     // levels
@@ -42,7 +60,18 @@ export default {
   },
 
   create: function() {
-    this.game.add.image(0, 0, 'background');
+    // background
+    const randomIndex = getRandomInt(0, BG_SET.length - 1);
+
+    const bgKey = BG_SET[randomIndex].replace(/.frag/, '');
+
+    this.filter = new Phaser.Filter(
+      this.game,
+      null,
+      this.game.cache.getShader(bgKey)
+    );
+
+    this.filter.addToWorld(0, 0, WORLD_SIZE.width, WORLD_SIZE.height);
 
     // set up bitmap data for direction indicator
     this.bitmapData = this.game.add.bitmapData(
@@ -78,6 +107,7 @@ export default {
 
   update: function() {
     this.captureManager.update();
+    this.filter.update();
   },
 
   render: function() {
