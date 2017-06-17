@@ -1,3 +1,12 @@
 node_modules
 .idea
-dist
+
+/dist
+/www/bundle
+
+# Cordova
+/platforms
+/plugins
+
+# res
+resources/signing
