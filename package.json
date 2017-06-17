@@ -25,5 +25,8 @@
     "babel-loader": "^7.0.0",
     "browser-sync": "^2.18.12",
     "webpack": "^2.6.1"
+  },
+  "engines": {
+    "node": "7.9.0"
   }
 }
