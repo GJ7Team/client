@@ -12,6 +12,11 @@ const TYPES = {
   enemy: 'enemy',
 };
 
+function collisionHandler(colony, bacteria) {
+  console.warn('collisionHandler');
+  bacteria.kill();
+}
+
 export default class Colony extends Phaser.Sprite {
   constructor(game, x, y, imageName, type, graphicsCanvas) {
     super(game, x, y, imageName);
@@ -28,6 +33,7 @@ export default class Colony extends Phaser.Sprite {
     if (this._colonyIsActive()) {
       this._startSpawn();
     }
+    this.colides = [];
   }
 
   update() {
@@ -93,6 +99,8 @@ export default class Colony extends Phaser.Sprite {
         }, this.game.physics.arcade, false, 200);
 
       }, 700);
+
+      this.colides.push({ colony: target, bacteries });
     }
 
     function createBacteria(x, y, game, bacteries, frame) {
@@ -106,13 +114,19 @@ export default class Colony extends Phaser.Sprite {
 
       const Xvector = ((target.x - bacteria.x) * 0.2) + Math.random() * 100;
       const Yvector = ((target.y - bacteria.y) * 0.2) + Math.random() * 100;
-      console.warn('Xvector', Xvector, 'Yvector', Yvector)
+      // console.warn('Xvector', Xvector, 'Yvector', Yvector)
       bacteria.body.allowGravity = true;  
       bacteria.body.velocity.setTo(Xvector, Yvector);
 
       bacteria.frame = frame;
       bacteria.scale.setTo(0.2, 0.2);
     }
+  }
+
+  _update() {
+    this.colides.forEach(({ colony, bacteries }) => {
+      this.game.physics.arcade.collide(colony, bacteries, collisionHandler, null, this);
+    });
   }
 
   _canAttack() {

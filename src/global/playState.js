@@ -69,6 +69,9 @@ export default {
 
   update: function () {
     this.captureManager.update();
+    this.colonies.forEach((colony) => {
+      colony._update.call(colony);
+    });
   },
 
   render: function() {
@@ -94,6 +97,10 @@ export default {
       colony.type,
       this.graphicsCanvas
     );
+
+    this.game.physics.arcade.enable(sprite);
+    sprite.anchor.setTo(0, 0);
+    sprite.body.immovable = true;
     this.colonies.add(sprite);
   },
 
