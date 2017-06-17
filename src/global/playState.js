@@ -14,12 +14,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-const BG_SET = [
-  'bg-bacteria.frag',
-  'bg-hypnotic.frag',
-  'bg-microflora.frag',
-  'bg-radiator.frag',
-];
+const BG_SET = ['bg-bacteria.frag', 'bg-microflora.frag', 'bg-blue-dots.frag'];
 
 export default {
   preload: function() {
