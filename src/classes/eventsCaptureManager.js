@@ -48,14 +48,27 @@ export default class EventsCaptureManager {
 
   checkWinState() {
     let hasEnemy = false;
-    this.colonies.forEach(
-      c => (c.type === COLONY_TYPES.enemy ? (hasEnemy = true) : null)
-    );
+    let hasSelf = false;
+    this.colonies.forEach(c => {
+      if (c.type === COLONY_TYPES.enemy) {
+        hasEnemy = true;
+      }
+      if (c.type === COLONY_TYPES.ally) {
+        hasSelf = true;
+      }
+    });
     console.warn('checkWinState', hasEnemy);
     if (!hasEnemy) {
       // TODO CHECK enemy colonies in progress
       console.error('TODO SERVER - WIN STATE');
-      goToResultState(this.game);
+      setTimeout(() => goToResultState(this.game), 2000);
+    }
+
+    if (!hasSelf) {
+      // TODO CHECK enemy colonies in progress
+      // LOSE
+      console.error('TODO SERVER - LOOSE STATE');
+      setTimeout(() => goToResultState(this.game), 2000);
     }
   }
 

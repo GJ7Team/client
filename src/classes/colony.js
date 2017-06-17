@@ -116,7 +116,6 @@ export default class Colony extends Phaser.Sprite {
   }
 
   _setEventsCaptureManger(manger) {
-    console.warn('setEventsCaptureManger', manger);
     this.eventsCaptureManger = manger;
   }
 
@@ -166,7 +165,6 @@ export default class Colony extends Phaser.Sprite {
     if (newType === COLONY_TYPES.neutral && this._hasSpawn()) {
       this._stopSpawn();
     }
-    console.warn('this.eventsCaptureManger', this.eventsCaptureManger);
     this.eventsCaptureManger.checkWinState();
   }
 
