@@ -12,6 +12,12 @@ const TYPES = {
   enemy: 'enemy',
 };
 
+const TYPE_TO_IMAGE = {
+  [TYPES.ally]: 'colony:ally',
+  [TYPES.neutral]: 'colony:neutral',
+  [TYPES.enemy]: 'colony:enemy',
+};
+
 function collisionHandler(colony, bacteria) {
   console.warn('collisionHandler');
 
@@ -54,6 +60,7 @@ function createBacteria(x, y, game, bacteries, target, frame) {
 
 export default class Colony extends Phaser.Sprite {
   constructor(game, x, y, imageName, type, graphicsCanvas) {
+    const image = TYPE_TO_IMAGE[type];
     super(game, x, y, imageName);
 
     this.power = type === TYPES.neutral
@@ -97,6 +104,10 @@ export default class Colony extends Phaser.Sprite {
       newType
     );
     this.type = newType;
+    this.loadTexture(TYPE_TO_IMAGE[newType], 0);
+    if (!this.spawnInterval) {
+      this._startSpawn();
+    }
   }
 
   _createCounter() {
