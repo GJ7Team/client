@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import PlayState from './global/playState';
 import videoDemoState from './global/videoDemoState';
 import menuState from './global/menuState';
