@@ -276,7 +276,8 @@ export default class Colony extends Phaser.Sprite {
   }
 
   _updateAttackDirection(event) {
-    if (!this._canAttack()) {
+    const isAlly = this.type === COLONY_TYPES.ally;
+    if (!isAlly) {
       return false;
     }
 
