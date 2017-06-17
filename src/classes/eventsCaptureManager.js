@@ -11,7 +11,7 @@ export default class EventsCaptureManager {
 
   enableInput() {
     this.colonies.inputEnableChildren = true;
-    this.colonies.forEach((colony) => {
+    this.colonies.forEach(colony => {
       colony.inputEnabled = true;
     });
 
@@ -34,7 +34,12 @@ export default class EventsCaptureManager {
   getTargetColony(pointer) {
     for (let i = 0, len = this.colonies.length; i < len; i++) {
       const colony = this.colonies.getAt(i);
-      const colonyRectangle = new Phaser.Rectangle(colony.x, colony.y, colony.width, colony.height);
+      const colonyRectangle = new Phaser.Rectangle(
+        colony.x,
+        colony.y,
+        colony.width,
+        colony.height
+      );
 
       if (Phaser.Rectangle.contains(colonyRectangle, pointer.x, pointer.y)) {
         return colony;
@@ -44,12 +49,10 @@ export default class EventsCaptureManager {
     return null;
   }
 
-
   render() {
     // this.game.debug.text("Left Button: " + this.game.input.activePointer.leftButton.isDown, 10, 10);
     // this.game.debug.text("Middle Button: " + this.game.input.activePointer.middleButton.isDown, 10, 74);
     // this.game.debug.text("Right Button: " + this.game.input.activePointer.rightButton.isDown, 10, 260 - 122);
-
     // this.game.debug.text(this.result, 10, 20);
   }
 }
