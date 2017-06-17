@@ -73,7 +73,6 @@ export default class EventsCaptureManager {
     // setup attack direction
     this.game.input.addMoveCallback(this.onMouseMove, this);
     this.activeColony = colony;
-    this.activeColony._startShowingAttackDirection();
   }
 
   onUp(sprite, pointer) {

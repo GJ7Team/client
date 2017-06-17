@@ -1,4 +1,9 @@
-import { GLOBAL_SPEED, COLONY_TYPES, TYPE_TO_IMAGE } from '../constants';
+import {
+  GLOBAL_SPEED,
+  COLONY_TYPES,
+  TYPE_TO_IMAGE,
+  ATTACK_DIRECTION_COLOR,
+} from '../constants';
 
 const INITIAL_ACTIVE_POWER = 10;
 const INITIAL_NEUTRAL_POWER = 0;
@@ -6,6 +11,8 @@ const ATTACK_MODIFICATOR = 0.65;
 const MIN_ATTACK_REQUIREMENT = 10;
 const SPAWN_INTERVAL = Math.round(1000 / GLOBAL_SPEED);
 const SPAWN_AMOUNT = 1;
+const RADIUS_DELTA = 10;
+const ANIMATION_REMOVAL_DELAY = 200;
 
 function enemyCollisionHandler(colony, bacteria) {
   console.info('[bacterium] enmy colision');
@@ -81,7 +88,7 @@ function createBacteria(x, y, game, bacteries, target, frame) {
 }
 
 export default class Colony extends Phaser.Sprite {
-  constructor(game, x, y, imageName, type, graphicsCanvas) {
+  constructor(game, x, y, imageName, type, bitmapData) {
     const image = TYPE_TO_IMAGE[type];
     super(game, x, y, imageName);
 
@@ -89,7 +96,13 @@ export default class Colony extends Phaser.Sprite {
       ? INITIAL_NEUTRAL_POWER
       : INITIAL_ACTIVE_POWER;
     this.type = type;
-    this.graphicsCanvas = graphicsCanvas;
+    this.bitmapData = bitmapData;
+    this.center = {
+      x: this.x + this.width / 2,
+      y: this.y + this.height / 2,
+    };
+    this.radius = Math.floor(this.width / 2) + RADIUS_DELTA;
+    this.graphicsColor = ATTACK_DIRECTION_COLOR;
 
     this._createCounter();
 
@@ -108,8 +121,8 @@ export default class Colony extends Phaser.Sprite {
   }
 
   update() {
-    this.text.x = Math.floor(this.x + this.width / 2);
-    this.text.y = Math.floor(this.y + this.height / 2);
+    this.text.x = Math.floor(this.center.x);
+    this.text.y = Math.floor(this.center.y);
     this.text.setText(this.power);
 
     this.colides.forEach(({ colony, bacteries }) => {
@@ -213,7 +226,7 @@ export default class Colony extends Phaser.Sprite {
         createBacteria(this.x, this.y, this.game, bacteries, target, frame);
       }
 
-      this._stopShowingAttackDirection();
+      this._stopShowingAttackDirection(target);
 
       setTimeout(() => {
         bacteries.forEach(
@@ -236,9 +249,9 @@ export default class Colony extends Phaser.Sprite {
   }
 
   _canAttack() {
-    return true;
-    // const isAlly = this.type === COLONY_TYPES.ally;
-    // return isAlly && this.power >= MIN_ATTACK_REQUIREMENT;
+    // return true;
+    const isAlly = this.type === COLONY_TYPES.ally;
+    return isAlly && this.power >= MIN_ATTACK_REQUIREMENT;
   }
 
   _colonyIsActive() {
@@ -262,32 +275,58 @@ export default class Colony extends Phaser.Sprite {
     return this.power;
   }
 
-  // @TODO: check https://codepen.io/ada-lovecraft/pen/dAjDp
-  _startShowingAttackDirection() {
-    if (!this._canAttack()) {
-      return false;
-    }
-
-    this.graphicsCanvas.clear();
-    this.graphicsCanvas.lineStyle(10, 0xffd900, 1);
-    this.graphicsCanvas.moveTo(
-      this.x + this.width / 2,
-      this.y + this.height / 2
-    );
-  }
-
   _updateAttackDirection(event) {
     if (!this._canAttack()) {
       return false;
     }
-    this.graphicsCanvas.moveTo(
-      this.x + this.width / 2,
-      this.y + this.height / 2
-    );
-    this.graphicsCanvas.lineTo(event.x, event.y);
+
+    this.lastPossibleAttackX = event.x;
+    this.lastPossibleAttackY = event.y;
+
+    this._renderStartingDirection();
+    this.bitmapData.render();
   }
 
-  _stopShowingAttackDirection() {
-    this.graphicsCanvas.clear();
+  _renderStartingDirection() {
+    this.bitmapData.clear();
+    this.bitmapData.ctx.beginPath();
+    this.bitmapData.ctx.beginPath();
+    this.bitmapData.ctx.moveTo(this.center.x, this.center.y);
+    this.bitmapData.ctx.lineTo(
+      this.lastPossibleAttackX,
+      this.lastPossibleAttackY
+    );
+    this.bitmapData.ctx.lineWidth = 4;
+    this.bitmapData.ctx.stroke();
+    this.bitmapData.ctx.closePath();
+
+    this.bitmapData.circle(
+      this.center.x,
+      this.center.y,
+      this.radius,
+      this.graphicsColor
+    );
   }
+
+  _stopShowingAttackDirection = target => {
+    if (!target) {
+      return this.bitmapData.clear();
+    }
+
+    const halfTargetWidth = Math.floor(target.width / 2);
+    const halfTargetHeight = Math.floor(target.height / 2);
+    const targetRadius = halfTargetWidth + RADIUS_DELTA;
+    this._renderStartingDirection();
+    this.bitmapData.circle(
+      target.x + halfTargetWidth,
+      target.y + halfTargetHeight,
+      targetRadius,
+      this.graphicsColor
+    );
+    this.bitmapData.render();
+
+    setTimeout(() => {
+      this.bitmapData.clear();
+    }, ANIMATION_REMOVAL_DELAY);
+  };
 }

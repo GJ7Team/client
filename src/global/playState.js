@@ -1,6 +1,6 @@
 import Colony from 'classes/colony';
 import EventsCaptureManager from 'classes/eventsCaptureManager';
-import { STATES } from '../constants';
+import { STATES, WORLD_SIZE, ATTACK_DIRECTION_COLOR } from '../constants';
 
 function goToMenuState() {
   this.game.state.start(STATES.MENU);
@@ -44,7 +44,16 @@ export default {
   create: function() {
     this.game.add.image(0, 0, 'background');
 
-    this.graphicsCanvas = this.game.add.graphics(0, 0);
+    // set up bitmap data for direction indicator
+    this.bitmapData = this.game.add.bitmapData(
+      WORLD_SIZE.width,
+      WORLD_SIZE.height
+    );
+    this.bitmapData.ctx.beginPath();
+    this.bitmapData.ctx.lineWidth = '4';
+    this.bitmapData.ctx.strokeStyle = ATTACK_DIRECTION_COLOR;
+    this.bitmapData.ctx.stroke();
+    this.game.add.sprite(0, 0, this.bitmapData);
 
     var music = this.game.add.audio('game');
     // music.play();
@@ -92,7 +101,7 @@ export default {
       colony.y,
       colony.image,
       colony.type,
-      this.graphicsCanvas
+      this.bitmapData
     );
 
     this.game.physics.arcade.enable(sprite);
