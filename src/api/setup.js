@@ -1,7 +1,7 @@
 import Io from 'socket.io-client';
 import getUserLocalId from './utils/getUserLocalId';
 
-const SOCKET_ENTRY_POINT = process.NODE_ENV === 'production'
+const SOCKET_ENTRY_POINT = process.env.NODE_ENV === 'production'
   ? 'https://bacterium666.herokuapp.com/'
   : 'http://localhost:8080';
 
