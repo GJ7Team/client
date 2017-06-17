@@ -1,4 +1,4 @@
-import { GLOBAL_SPEED } from '../constants';
+import { GLOBAL_SPEED, COLONY_TYPES, TYPE_TO_IMAGE } from '../constants';
 
 const INITIAL_ACTIVE_POWER = 10;
 const INITIAL_NEUTRAL_POWER = 0;
@@ -6,33 +6,47 @@ const ATTACK_MODIFICATOR = 0.65;
 const MIN_ATTACK_REQUIREMENT = 10;
 const SPAWN_INTERVAL = Math.round(1000 / GLOBAL_SPEED);
 const SPAWN_AMOUNT = 1;
-const TYPES = {
-  ally: 'ally',
-  neutral: 'neutral',
-  enemy: 'enemy',
-};
 
-const TYPE_TO_IMAGE = {
-  [TYPES.ally]: 'colony:ally',
-  [TYPES.neutral]: 'colony:neutral',
-  [TYPES.enemy]: 'colony:enemy',
-};
+function enemyCollisionHandler(colony, bacteria) {
+  console.warn('ENEMY collisionHandler');
+
+  switch (colony.type) {
+    case COLONY_TYPES.ally:
+      colony._changePower(-1);
+      if (colony.power === 0) {
+        colony._changeType(COLONY_TYPES.neutral);
+      }
+      break;
+    case COLONY_TYPES.neutral:
+      colony._changePower(1);
+      colony._changeType(COLONY_TYPES.enemy);
+      break;
+    case COLONY_TYPES.enemy:
+      colony._changePower(1);
+      break;
+    default:
+      console.error('[bacterium] Unknown type %s', colony.type);
+      break;
+  }
+
+  setTimeout(() => bacteria.kill(), 1);
+}
 
 function collisionHandler(colony, bacteria) {
   console.warn('collisionHandler');
 
   switch (colony.type) {
-    case TYPES.ally:
+    case COLONY_TYPES.ally:
       colony._changePower(1);
       break;
-    case TYPES.neutral:
+    case COLONY_TYPES.neutral:
       colony._changePower(1);
-      colony._changeType(TYPES.ally);
+      colony._changeType(COLONY_TYPES.ally);
       break;
-    case TYPES.enemy:
+    case COLONY_TYPES.enemy:
       colony._changePower(-1);
       if (colony.power === 0) {
-        colony._changeType(TYPES.neutral);
+        colony._changeType(COLONY_TYPES.neutral);
       }
       break;
     default:
@@ -63,7 +77,7 @@ export default class Colony extends Phaser.Sprite {
     const image = TYPE_TO_IMAGE[type];
     super(game, x, y, imageName);
 
-    this.power = type === TYPES.neutral
+    this.power = type === COLONY_TYPES.neutral
       ? INITIAL_NEUTRAL_POWER
       : INITIAL_ACTIVE_POWER;
     this.type = type;
@@ -76,6 +90,7 @@ export default class Colony extends Phaser.Sprite {
       this._startSpawn();
     }
     this.colides = [];
+    this.enemyColides = [];
   }
 
   update() {
@@ -90,6 +105,18 @@ export default class Colony extends Phaser.Sprite {
         // Atack collistion
         // We will count damage here
         collisionHandler,
+        null,
+        this
+      );
+    });
+
+    this.enemyColides.forEach(({ colony, bacteries }) => {
+      this.game.physics.arcade.collide(
+        colony,
+        bacteries,
+        // Atack collistion
+        // We will count damage here
+        enemyCollisionHandler,
         null,
         this
       );
@@ -136,9 +163,14 @@ export default class Colony extends Phaser.Sprite {
     this._changePower(SPAWN_AMOUNT);
   };
 
+  _enemyAttack(target) {
+    // EMENY Attack reversed for player
+    this._attack(target, { enemyAttack: true });
+  }
+
   // @TODO: consume from colony power 60%
   // do not allow to _attack if colony power is not enough (25 poins min)
-  _attack(target) {
+  _attack(target, options) {
     if (!target) {
       return false;
     }
@@ -171,18 +203,22 @@ export default class Colony extends Phaser.Sprite {
         );
       }, 700);
 
-      this.colides.push({ colony: target, bacteries });
+      if (options && options.enemyAttack) {
+        this.enemyColides.push({ colony: target, bacteries });
+      } else {
+        this.colides.push({ colony: target, bacteries });
+      }
     }
   }
 
   _canAttack() {
     return true;
-    // const isAlly = this.type === TYPES.ally;
+    // const isAlly = this.type === COLONY_TYPES.ally;
     // return isAlly && this.power >= MIN_ATTACK_REQUIREMENT;
   }
 
   _colonyIsActive() {
-    return this.type === TYPES.ally || this.type === TYPES.enemy;
+    return this.type === COLONY_TYPES.ally || this.type === COLONY_TYPES.enemy;
   }
 
   // @TODO: add num to current colony power

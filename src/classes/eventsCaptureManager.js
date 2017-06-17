@@ -1,3 +1,5 @@
+import { COLONY_TYPES } from '../constants';
+
 export default class EventsCaptureManager {
   constructor(game, colonies) {
     this.game = game;
@@ -5,6 +7,26 @@ export default class EventsCaptureManager {
 
     //  Enable input
     this.enableInput();
+
+    // FAKE SERVER IVENTS EMITER
+    const superAI = () => {
+      const enemys = [];
+      const neutrals = [];
+      const allys = [];
+      this.colonies.forEach(
+        c => (c.type === COLONY_TYPES.enemy ? enemys.push(c) : null)
+      );
+      this.colonies.forEach(
+        c => (c.type === COLONY_TYPES.neutral ? neutrals.push(c) : null)
+      );
+      this.colonies.forEach(
+        c => (c.type === COLONY_TYPES.ally ? allys.push(c) : null)
+      );
+      enemys[0]._enemyAttack(neutrals[0] || allys[0]);
+      console.warn('ENEMY ATTACK', enemys[0], neutrals[0] || allys[0]);
+    };
+    superAI();
+    setInterval(superAI, 3000);
   }
 
   enableInput() {
@@ -69,9 +91,7 @@ export default class EventsCaptureManager {
     return null;
   }
 
-  update() {
-
-  }
+  update() {}
 
   render() {
     // this.game.debug.text("Left Button: " + this.game.input.activePointer.leftButton.isDown, 10, 10);
