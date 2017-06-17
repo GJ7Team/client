@@ -25,6 +25,12 @@ export default {
   create: function () {
     const game = this.game;
 
+    game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
+    game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+
+    // Stretch to fill
+    game.input.onDown.addOnce(toggleFullScreen, this);
+
     const background = game.add.sprite(0, 0, 'background');
     background.name = 'background';
 
@@ -50,5 +56,16 @@ export default {
     });
     this.input.blockInput = false;
     this.input.startFocus();
+
+    function toggleFullScreen() {
+        if (game.scale.isFullScreen)
+        {
+            game.scale.stopFullScreen();
+        }
+        else
+        {
+            game.scale.startFullScreen(false);
+        }
+    }
   }
 };

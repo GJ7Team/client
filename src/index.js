@@ -12,9 +12,16 @@ const WORLD_SIZE = {
 
 window.onload = () => {
   const game = new Phaser.Game(WORLD_SIZE.width, WORLD_SIZE.height, Phaser.AUTO, 'game');
-  console.warn('PhaserInput', PhaserInput);
+
+//   const scaleManager = new Phaser.ScaleManager(game, WORLD_SIZE.width, WORLD_SIZE.height);
+
+//   console.warn('scaleManager', scaleManager);
+//   scaleManager.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+
   const pluginManager = new Phaser.PluginManager(game)
   pluginManager.add(PhaserInput.Plugin);
+
+  
 
   game.state.add('play', PlayState);
   game.state.add('video', videoDemoState);
@@ -22,3 +29,11 @@ window.onload = () => {
   game.state.add('loginState', loginState);
   game.state.start('loginState');
 };
+
+
+  /*
+    NO_SCALE:1
+    RESIZE:3
+    SHOW_ALL:2
+    USER_SCALE 4
+    */
