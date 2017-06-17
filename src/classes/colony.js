@@ -17,6 +17,25 @@ function collisionHandler(colony, bacteria) {
   bacteria.kill();
 }
 
+ function createBacteria(x, y, game, bacteries, target, frame) {
+    var bacteria = bacteries.create(
+      x,
+      y,
+      'bacteria'
+    );
+    bacteria.name = `Bacteria-${bacteries.length}`;
+    bacteria.body.collideWorldBounds = true;
+
+    const Xvector = ((target.x - bacteria.x) * 0.2) + Math.random() * 100;
+    const Yvector = ((target.y - bacteria.y) * 0.2) + Math.random() * 100;
+    // console.warn('Xvector', Xvector, 'Yvector', Yvector)
+    bacteria.body.allowGravity = true;  
+    bacteria.body.velocity.setTo(Xvector, Yvector);
+
+    bacteria.frame = frame;
+    bacteria.scale.setTo(0.2, 0.2);
+  }
+
 export default class Colony extends Phaser.Sprite {
   constructor(game, x, y, imageName, type, graphicsCanvas) {
     super(game, x, y, imageName);
@@ -75,8 +94,6 @@ export default class Colony extends Phaser.Sprite {
       return false;
     }
 
-    console.log(target.key);
-
     if (this._canAttack()) {
       const attackPower = Math.round(this.power * ATTACK_MODIFICATOR);
 
@@ -85,9 +102,10 @@ export default class Colony extends Phaser.Sprite {
 
       const bacteries = this.game.add.group();
       bacteries.enableBody = true;
+
       const frame = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
       for (let i = 0; i < attackPower; i++) {
-        createBacteria(this.x, this.y, this.game, bacteries, frame);
+        createBacteria(this.x, this.y, this.game, bacteries, target, frame);
       }
 
       this._stopShowingAttackDirection();
@@ -103,24 +121,7 @@ export default class Colony extends Phaser.Sprite {
       this.colides.push({ colony: target, bacteries });
     }
 
-    function createBacteria(x, y, game, bacteries, frame) {
-      var bacteria = bacteries.create(
-        x,
-        y,
-        'bacteria'
-      );
-      bacteria.name = `Bacteria-${bacteries.length}`;
-      bacteria.body.collideWorldBounds = true;
-
-      const Xvector = ((target.x - bacteria.x) * 0.2) + Math.random() * 100;
-      const Yvector = ((target.y - bacteria.y) * 0.2) + Math.random() * 100;
-      // console.warn('Xvector', Xvector, 'Yvector', Yvector)
-      bacteria.body.allowGravity = true;  
-      bacteria.body.velocity.setTo(Xvector, Yvector);
-
-      bacteria.frame = frame;
-      bacteria.scale.setTo(0.2, 0.2);
-    }
+   
   }
 
   _update() {
