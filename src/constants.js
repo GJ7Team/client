@@ -3,6 +3,7 @@ export const STATES = {
   VIDEO: 'video',
   MENU: 'menuState',
   LOGIN: 'loginState',
+  RESULT: 'resultState',
 };
 
 export const COLONY_TYPES = {

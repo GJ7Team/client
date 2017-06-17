@@ -8,7 +8,7 @@ const SPAWN_INTERVAL = Math.round(1000 / GLOBAL_SPEED);
 const SPAWN_AMOUNT = 1;
 
 function enemyCollisionHandler(colony, bacteria) {
-  console.warn('ENEMY collisionHandler');
+  console.info('[bacterium] enmy colision');
 
   switch (colony.type) {
     case COLONY_TYPES.ally:
@@ -33,7 +33,7 @@ function enemyCollisionHandler(colony, bacteria) {
 }
 
 function collisionHandler(colony, bacteria) {
-  console.warn('collisionHandler');
+  console.info('[bacterium] colision');
 
   switch (colony.type) {
     case COLONY_TYPES.ally:
@@ -91,6 +91,12 @@ export default class Colony extends Phaser.Sprite {
     }
     this.colides = [];
     this.enemyColides = [];
+    this.eventsCaptureManger = null;
+  }
+
+  _setEventsCaptureManger(manger) {
+    console.warn('setEventsCaptureManger', manger);
+    this.eventsCaptureManger = manger;
   }
 
   update() {
@@ -132,9 +138,15 @@ export default class Colony extends Phaser.Sprite {
     );
     this.type = newType;
     this.loadTexture(TYPE_TO_IMAGE[newType], 0);
-    if (!this.spawnInterval) {
+    if (newType !== COLONY_TYPES.neutral && !this._hasSpawn()) {
       this._startSpawn();
     }
+
+    if (newType === COLONY_TYPES.neutral && this._hasSpawn()) {
+      this._stopSpawn();
+    }
+    console.warn('this.eventsCaptureManger', this.eventsCaptureManger);
+    this.eventsCaptureManger.checkWinState();
   }
 
   _createCounter() {
@@ -161,6 +173,10 @@ export default class Colony extends Phaser.Sprite {
 
   _spawn = () => {
     this._changePower(SPAWN_AMOUNT);
+  };
+
+  _hasSpawn = () => {
+    return isFinite(this.spawnInterval);
   };
 
   _enemyAttack(target) {

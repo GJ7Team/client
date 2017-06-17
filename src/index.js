@@ -3,6 +3,7 @@ import PlayState from './global/playState';
 import videoDemoState from './global/videoDemoState';
 import menuState from './global/menuState';
 import loginState from './global/loginState';
+import resultState from './global/resultState';
 import PhaserInput from 'lib/PhaserInput';
 
 import './store';
@@ -34,5 +35,6 @@ start(() => {
   game.state.add('video', videoDemoState);
   game.state.add('menuState', menuState);
   game.state.add('loginState', loginState);
+  game.state.add('resultState', resultState);
   game.state.start('loginState');
 });

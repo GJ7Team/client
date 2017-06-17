@@ -103,5 +103,8 @@ export default {
 
   _initUserInteractions() {
     this.captureManager = new EventsCaptureManager(this.game, this.colonies);
+    this.colonies.forEach(c => {
+      c._setEventsCaptureManger(this.captureManager);
+    });
   },
 };

@@ -1,4 +1,8 @@
-import { COLONY_TYPES } from '../constants';
+import { COLONY_TYPES, STATES } from '../constants';
+
+function goToResultState(game) {
+  game.state.start(STATES.RESULT);
+}
 
 export default class EventsCaptureManager {
   constructor(game, colonies) {
@@ -22,11 +26,25 @@ export default class EventsCaptureManager {
       this.colonies.forEach(
         c => (c.type === COLONY_TYPES.ally ? allys.push(c) : null)
       );
-      enemys[0]._enemyAttack(neutrals[0] || allys[0]);
-      console.warn('ENEMY ATTACK', enemys[0], neutrals[0] || allys[0]);
+      if (enemys[0]) {
+        enemys[0]._enemyAttack(neutrals[0] || allys[0]);
+      }
     };
     superAI();
     setInterval(superAI, 3000);
+  }
+
+  checkWinState() {
+    let hasEnemy = false;
+    this.colonies.forEach(
+      c => (c.type === COLONY_TYPES.enemy ? (hasEnemy = true) : null)
+    );
+    console.warn('checkWinState', hasEnemy);
+    if (!hasEnemy) {
+      // TODO CHECK enemy colonies in progress
+      console.error('TODO SERVER - WIN STATE');
+      goToResultState(this.game);
+    }
   }
 
   enableInput() {
