@@ -1,9 +1,13 @@
+import { actions } from '../store';
 import { STATES } from '../constants';
 
-function login() {
-  console.warn('enter', this.input.value);
+const login = async function() {
+  actions.gameEnter({
+    name: this.input.value,
+  });
+
   this.game.state.start(STATES.MENU);
-}
+};
 
 export default {
   preload: function() {

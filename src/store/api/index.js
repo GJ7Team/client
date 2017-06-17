@@ -50,52 +50,52 @@ export const matchFind = async function*() {
   };
 };
 
-const run = async () => {
-  try {
-    console.log('gameEnter');
-    const game = await gameEnter({
-      name: 'tuchk4',
-    });
-
-    console.log('matchFind');
-    const matchFinder = await matchFind();
-
-    const matchDetails = (await matchFinder.next()).value;
-    const matchEnvironment = (await matchFinder.next()).value;
-    const matchActions = (await matchFinder.next()).value;
-
-    console.log('matchDetails');
-    console.log(matchDetails);
-
-    console.log('matchEnvironment');
-    console.log(matchEnvironment);
-
-    console.log('matchActions');
-    console.log(matchActions);
-
-    matchActions.attack({
-      point: 15,
-      value: 60,
-    });
-
-    matchActions.cast({
-      coords: [
-        {
-          x: 10,
-          y: 15,
-        },
-        {
-          x: 40,
-          y: 30,
-        },
-      ],
-      spell: 'ice-wall',
-    });
-
-    // -----
-  } catch (e) {
-    console.log(e);
-  }
-};
+// const run = async () => {
+//   try {
+//     console.log('gameEnter');
+//     const game = await gameEnter({
+//       name: 'tuchk4',
+//     });
+//
+//     console.log('matchFind');
+//     const matchFinder = await matchFind();
+//
+//     const matchDetails = (await matchFinder.next()).value;
+//     const matchEnvironment = (await matchFinder.next()).value;
+//     const matchActions = (await matchFinder.next()).value;
+//
+//     console.log('matchDetails');
+//     console.log(matchDetails);
+//
+//     console.log('matchEnvironment');
+//     console.log(matchEnvironment);
+//
+//     console.log('matchActions');
+//     console.log(matchActions);
+//
+//     matchActions.attack({
+//       point: 15,
+//       value: 60,
+//     });
+//
+//     matchActions.cast({
+//       coords: [
+//         {
+//           x: 10,
+//           y: 15,
+//         },
+//         {
+//           x: 40,
+//           y: 30,
+//         },
+//       ],
+//       spell: 'ice-wall',
+//     });
+//
+//     // -----
+//   } catch (e) {
+//     console.log(e);
+//   }
+// };
 
 // run();

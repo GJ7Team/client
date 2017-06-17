@@ -25,6 +25,9 @@
   },
   "homepage": "https://github.com/bo-ora/pl-jam#readme",
   "dependencies": {
+    "redux": "^3.7.0",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.2.0",
     "socket.io-client": "^2.0.3"
   },
   "engines": {

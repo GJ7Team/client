@@ -5,6 +5,7 @@ import menuState from './global/menuState';
 import loginState from './global/loginState';
 import PhaserInput from 'lib/PhaserInput';
 
+import './store';
 import './api';
 
 const WORLD_SIZE = {
