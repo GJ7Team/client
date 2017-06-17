@@ -70,7 +70,10 @@ export default class EventsCaptureManager {
   }
 
   attackIsAllowed(sourceColony, targetColony) {
-    return sourceColony && targetColony && sourceColony !== targetColony;
+    const isMine = sourceColony.type === COLONY_TYPES.ally;
+    return (
+      isMine && sourceColony && targetColony && sourceColony !== targetColony
+    );
   }
 
   getTargetColony(pointer) {
