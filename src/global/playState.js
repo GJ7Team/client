@@ -22,7 +22,7 @@ export default {
     this.game.add.image(0, 0, 'background');
 
     var music = this.game.add.audio('game');
-    music.play();
+    // music.play();
 
     this._loadLevel(this.game.cache.getJSON('level:1'));
 
