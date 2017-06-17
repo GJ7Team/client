@@ -226,7 +226,9 @@ export default class Colony extends Phaser.Sprite {
         createBacteria(this.x, this.y, this.game, bacteries, target, frame);
       }
 
-      this._stopShowingAttackDirection(target);
+      if (this._isAlly()) {
+        this._stopShowingAttackDirection(target);
+      }
 
       setTimeout(() => {
         bacteries.forEach(
@@ -255,7 +257,11 @@ export default class Colony extends Phaser.Sprite {
   }
 
   _colonyIsActive() {
-    return this.type === COLONY_TYPES.ally || this.type === COLONY_TYPES.enemy;
+    return this._isAlly() || this.type === COLONY_TYPES.enemy;
+  }
+
+  _isAlly() {
+    return this.type === COLONY_TYPES.ally;
   }
 
   // @TODO: add num to current colony power
@@ -276,7 +282,7 @@ export default class Colony extends Phaser.Sprite {
   }
 
   _updateAttackDirection(event) {
-    if (!this._canAttack()) {
+    if (!this._isAlly()) {
       return false;
     }
 
