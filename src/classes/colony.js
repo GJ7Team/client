@@ -62,11 +62,17 @@ export default class Colony extends Phaser.Sprite {
 
   // @TODO: consume from colony power 60%
   // do not allow to _attack if colony power is not enough (25 poins min)
-  _attack() {
+  _attack(target) {
+    if (!target) {
+      return false;
+    }
+
+    console.log(target.key);
+
     if (this._canAttack()) {
       const attackPower = MATH.round(this.power * ATTACK_MODIFICATOR);
 
-      const attacked = this._changePower(attackPower);
+      const attacked = this._changePower(-attackPower);
       console.log(`attacked with [${attacked}] bacteria`);
     }
   }
