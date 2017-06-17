@@ -77,7 +77,45 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ })
 /************************************************************************/
 /******/ ([
-/* 0 */,
+/* 0 */
+/* exports provided: default */
+/* exports used: default */
+/*!*********************************!*\
+  !*** ./src/global/playState.js ***!
+  \*********************************/
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+  preload: function () {
+    // background
+    this.game.load.image('background', 'assets/images/background.png');
+
+    // levels
+    this.game.load.json('level:1', 'data/level00.json');
+
+    // colonies
+    this.game.load.image('colony:neutral', 'assets/images/colony_neutral.png');
+    this.game.load.image('colony:enemy', 'assets/images/colony_enemy.png');
+    this.game.load.image('colony:ally', 'assets/images/colony_ally.png');
+  },
+
+  create: function () {
+    this.game.add.image(0, 0, 'background');
+
+    this._loadLevel(this.game.cache.getJSON('level:1'));
+  },
+
+  _loadLevel: function (data) {
+    data.colonies.forEach(this._spawnColony, this);
+  },
+
+  _spawnColony: function (colony) {
+    this.game.add.sprite(colony.x, colony.y, colony.image);
+  }
+});
+
+/***/ }),
 /* 1 */
 /* no static exports found */
 /* all exports used */
@@ -88,7 +126,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__global_playState__ = __webpack_require__(/*! ./global/playState */ 3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__global_playState__ = __webpack_require__(/*! ./global/playState */ 0);
 
 
 const WORLD_SIZE = {
@@ -102,27 +140,6 @@ window.onload = () => {
   game.state.add('play', __WEBPACK_IMPORTED_MODULE_0__global_playState__["a" /* default */]);
   game.state.start('play');
 };
-
-/***/ }),
-/* 2 */,
-/* 3 */
-/* exports provided: default */
-/* exports used: default */
-/*!*********************************!*\
-  !*** ./src/global/playState.js ***!
-  \*********************************/
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = ({
-  preload: function () {
-    this.game.load.image('background', 'assets/images/background.png');
-  },
-
-  create: function () {
-    this.game.add.image(0, 0, 'background');
-  }
-});
 
 /***/ })
 /******/ ]);
