@@ -1,40 +1,97 @@
-const INITIAL_FORCE = 10;
+import { GLOBAL_SPEED } from '../constants';
+
+const INITIAL_POWER = 10;
 const ATTACK_MODIFICATOR = 0.65;
 const MIN_ATTACK_REQUIREMENT = 25;
+const SPAWN_INTERVAL = Math.round(1000 / GLOBAL_SPEED);
+const SPAWN_AMOUNT = 1;
+const TYPES = {
+  ally: 'ally',
+  neutral: 'neutral',
+  enemy: 'enemy',
+};
 
 export default class Colony extends Phaser.Sprite {
-  constructor(game, x, y, imageName) {
+  constructor(game, x, y, imageName, type) {
     super(game, x, y, imageName);
 
-    this.force = INITIAL_FORCE;
-  }
+    this.power = INITIAL_POWER;
+    this.type = type;
 
-  // @TODO: consume from colony force 60%
-  // do not allow to attack if colony force is not enough (25 poins min)
-  attack() {
-    if (this.canAttack()) {
-      const attackPower = MATH.round(this.force * ATTACK_MODIFICATOR);
+    this._createCounter();
 
-      this.changeForce(attackPower);
+    // start spawning bacteria
+    if (this._colonyIsActive()) {
+      this._startSpawn();
     }
   }
 
-  canAttack() {
-    return this.force >= MIN_ATTACK_REQUIREMENT;
+  update() {
+    this.text.x = Math.floor(this.x + this.width / 2);
+    this.text.y = Math.floor(this.y + this.height / 2);
+    this.text.setText(this.power);
   }
 
-  // @TODO: add num to current colony force
+  _createCounter() {
+    const style = {
+      font: "14px Arial",
+      fill: "#000",
+      wordWrap: true,
+      wordWrapWidth: this.width,
+      align: "center",
+    };
+
+    this.text = this.game.add.text(0, 0, this.power, style);
+    this.text.anchor.set(0.5);
+  }
+
+  _startSpawn() {
+    this.spawnInterval = setInterval(this._spawn, SPAWN_INTERVAL);
+  }
+
+  _stopSpawn() {
+    clearInterval(this.spawnInterval);
+    this.spawnInterval = null;
+  }
+
+  _spawn = () => {
+    this._changePower(SPAWN_AMOUNT);
+
+  };
+
+  // @TODO: consume from colony power 60%
+  // do not allow to _attack if colony power is not enough (25 poins min)
+  _attack() {
+    if (this._canAttack()) {
+      const attackPower = MATH.round(this.power * ATTACK_MODIFICATOR);
+
+      const attacked = this._changePower(attackPower);
+      console.log(`attacked with [${attacked}] bacteria`);
+    }
+  }
+
+  _canAttack() {
+    return this.power >= MIN_ATTACK_REQUIREMENT;
+  }
+
+  _colonyIsActive() {
+    return this.type === TYPES.ally || this.type === TYPES.enemy;
+  }
+
+  // @TODO: add num to current colony power
   reinforce(num) {
-    this.changeForce(num);
+    const reinforced = this._changePower(num);
+
+    console.log(`reinforced with [${reinforced}] bacteria`);
   }
 
-  changeForce(num) {
+  _changePower(num) {
     if (Number.isInteger(num)) {
-      this.force += num;
+      this.power += num;
     } else {
       console.warn(`reinforce: [${num}] should be an integer`);
     }
 
-    return this.force;
+    return this.power;
   }
 }

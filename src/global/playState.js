@@ -31,7 +31,7 @@ export default {
   },
 
   _spawnColony: function (colony) {
-    const sprite = new Colony(this.game, colony.x, colony.y, colony.image);
+    const sprite = new Colony(this.game, colony.x, colony.y, colony.image, colony.type);
     this.colonies.add(sprite);
   }
 };
