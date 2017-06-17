@@ -10,7 +10,7 @@ module.exports = function() {
     bail: true,
     devtool: false,
     entry: {
-      app: "./src/index.js"
+      app: "index.js"
     },
     output: {
       path: resolve('./dist'),

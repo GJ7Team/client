@@ -73,20 +73,20 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /* exports provided: default */
 /* exports used: default */
-/*!*********************************!*\
-  !*** ./src/global/playState.js ***!
-  \*********************************/
+/*!*****************************!*\
+  !*** ./global/playState.js ***!
+  \*****************************/
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_classes_colony__ = __webpack_require__(/*! classes/colony */ 2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_classes_colony__ = __webpack_require__(/*! classes/colony */ 1);
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
@@ -127,11 +127,30 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 /* 1 */
+/* exports provided: default */
+/* exports used: default */
+/*!***************************!*\
+  !*** ./classes/colony.js ***!
+  \***************************/
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+class Colony extends Phaser.Sprite {
+  constructor(game, x, y, imageName) {
+    super(game, x, y, imageName);
+  }
+
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Colony;
+
+
+/***/ }),
+/* 2 */
 /* no static exports found */
 /* all exports used */
-/*!**********************!*\
-  !*** ./src/index.js ***!
-  \**********************/
+/*!******************!*\
+  !*** ./index.js ***!
+  \******************/
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -283,24 +302,6 @@ const STATES = {
     VIDEO: 'video'
 };
 /* harmony export (immutable) */ __webpack_exports__["a"] = STATES;
-
-
-/***/ }),
-/* 2 */
-/* exports provided: default */
-/* exports used: default */
-/*!*******************************!*\
-  !*** ./src/classes/colony.js ***!
-  \*******************************/
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-class Colony extends Phaser.Sprite {
-  constructor(game, x, y, imageName) {
-    super(game, x, y, imageName);
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Colony;
 
 
 /***/ })
