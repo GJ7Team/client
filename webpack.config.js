@@ -40,9 +40,9 @@ module.exports = function() {
       ],
     },
     plugins: [
-      new webpack.ProvidePlugin({
+      new webpack.DefinePlugin({
         'process.env': {
-          NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+          NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
         },
       }),
     ],
