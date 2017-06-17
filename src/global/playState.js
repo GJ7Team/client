@@ -16,6 +16,8 @@ export default {
 
     // music
     this.game.load.audio('game', ['assets/audio/game.mp3']);
+
+    this.bacteria = this.game.load.spritesheet('bacteria', 'assets/spizjenoe/lineup.png', 200, 200);
   },
 
   create: function () {
