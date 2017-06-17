@@ -11,12 +11,13 @@ function goToVideoState() {
 export default {
   preload: function() {
     const game = this.game;
-    game.load.spritesheet('button', 'assets/buttons/button_sprite_sheet.png', 193, 71);
+    this.back = game.load.spritesheet('button', 'assets/buttons/button_sprite_sheet.png', 193, 71);
     this.game.load.image('background', 'assets/images/background.png');
   },
 
   create: function () {
     const game = this.game;
+
     const background = game.add.sprite(0, 0, 'background');
     background.name = 'background';
 
