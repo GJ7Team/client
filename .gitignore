@@ -10,3 +10,12 @@ node_modules
 
 # res
 resources/signing
+
+# Becasue of heroku
+# - To use npm to install your application's dependencies please delete
+#  the yarn.lock file.
+#  $ git rm yarn.lock
+# - To use yarn to install your application's dependences please delete
+#  the package-lock.json file.
+#  $ git rm package-lock.json
+/yarn.lock
