@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack --watch",
-    "build": "webpack",
+    "postinstsall": "webpack",
+    "start": "browser-sync start --server --files=src",
+    "dev": "webpack --watch",
     "serve": "browser-sync start --server --files=src",
+    "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
