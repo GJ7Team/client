@@ -13,10 +13,16 @@ export default {
     this.game.load.image('colony:neutral', 'assets/images/colony_neutral.png');
     this.game.load.image('colony:enemy', 'assets/images/colony_enemy.png');
     this.game.load.image('colony:ally', 'assets/images/colony_ally.png');
+
+    // music
+    this.game.load.audio('game', ['assets/audio/game.mp3']);
   },
 
   create: function () {
     this.game.add.image(0, 0, 'background');
+
+    var music = this.game.add.audio('game');
+    music.play();
 
     this._loadLevel(this.game.cache.getJSON('level:1'));
 
