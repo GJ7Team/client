@@ -4,36 +4,37 @@ import menuState from './global/menuState';
 import loginState from './global/loginState';
 import PhaserInput from 'lib/PhaserInput';
 
+import './api';
 
 const WORLD_SIZE = {
   height: 414,
-  width: 736
+  width: 736,
 };
 
-window.onload = () => {
-  const game = new Phaser.Game(WORLD_SIZE.width, WORLD_SIZE.height, Phaser.AUTO, 'game');
+const start = game => {
+  window.onload = game;
+  // document.addEventListener('deviceready', game, false);
+};
 
-//   const scaleManager = new Phaser.ScaleManager(game, WORLD_SIZE.width, WORLD_SIZE.height);
+start(() => {
+  const game = new Phaser.Game(
+    WORLD_SIZE.width,
+    WORLD_SIZE.height,
+    Phaser.AUTO,
+    'game'
+  );
 
-//   console.warn('scaleManager', scaleManager);
-//   scaleManager.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+  //   const scaleManager = new Phaser.ScaleManager(game, WORLD_SIZE.width, WORLD_SIZE.height);
 
-  const pluginManager = new Phaser.PluginManager(game)
+  //   console.warn('scaleManager', scaleManager);
+  //   scaleManager.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+
+  const pluginManager = new Phaser.PluginManager(game);
   pluginManager.add(PhaserInput.Plugin);
-
-  
 
   game.state.add('play', PlayState);
   game.state.add('video', videoDemoState);
   game.state.add('menuState', menuState);
   game.state.add('loginState', loginState);
   game.state.start('loginState');
-};
-
-
-  /*
-    NO_SCALE:1
-    RESIZE:3
-    SHOW_ALL:2
-    USER_SCALE 4
-    */
+});

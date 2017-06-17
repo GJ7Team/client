@@ -10,10 +10,10 @@ module.exports = function() {
     bail: true,
     devtool: false,
     entry: {
-      app: "index.js"
+      app: 'index.js',
     },
     output: {
-      path: resolve('./dist'),
+      path: resolve('www', 'bundle'),
       filename: '[name].js',
       pathinfo: true,
       library: 'JAM',
@@ -28,7 +28,14 @@ module.exports = function() {
         {
           test: /\.js$/,
           exclude: /node_modules/,
-          use: ['babel-loader'],
+          use: [
+            {
+              loader: 'babel-loader',
+              options: {
+                presets: ['stage-0'],
+              },
+            },
+          ],
         },
       ],
     },
