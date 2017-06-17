@@ -1,12 +1,8 @@
 import { STATES } from './../constants';
 
-function goToMenuState() {
-    this.game.state.start(STATES.MENU);
-}
-
 function login() {
     console.warn('enter', this.input.value);
-    goToMenuState();
+    this.game.state.start(STATES.MENU);
 }
 
 export default {
