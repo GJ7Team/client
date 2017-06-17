@@ -1,42 +1,50 @@
-import * as actions from '../api';
+import emit, { createEmmiter, getMatchSocket } from '../api';
+
+const MATCH_ENTER = 'match/ENTER';
+const MATCH_START = 'match/START';
+
+const MATCH_SEARCH_START = 'match/SEARCH_START';
+const MATCH_SEARCH_SUCCESS = 'match/SEARCH_SUCCESS';
+const MATCH_FOUND = 'match/FOUND';
+
+const MATCH_ATTACK = 'match/ATTACK';
+const MATCH_CAST = 'match/CAST';
 
 const initialState = {
   isSearching: false,
-  enemy: {
-    id: null,
-    name: null,
-  },
-  options: {
-    map: null,
-    points: [],
-  },
+  enemy: null,
+  match: null,
   history: [],
   game: {},
 };
+
+let matchEmmiter = null;
+let matchSoket = null;
 
 export const matchSelector = state => state.match;
 
 export const matchFind = () => async dispatch => {
   dispatch({
-    type: 'match/SEARCH_START',
+    type: MATCH_SEARCH_START,
     payload: {},
   });
 
-  const match = await matchFind();
+  const match = await emit(MATCH_SEARCH_START);
 
   dispatch({
-    type: 'match/SEACRH_SUCCESS',
+    type: MATCH_SEARCH_SUCCESS,
     payload: match,
   });
 
-  const matchDetails = (await matchFinder.next()).value;
+  matchSoket = getMatchSocket(match.matchId);
+  matchEmmiter = createEmmiter(matchSocket);
+
+  const matchEnvironment = await matchEmmiter(MATCH_ENTER);
 
   dispatch({
-    type: 'match/DETAILS',
+    type: MATCH_ENTER,
     payload: matchDetails,
   });
-
-  const matchEnvironment = (await matchFinder.next()).value;
 
   dispatch({
     type: 'match/ENVIRONMENT',
@@ -46,37 +54,53 @@ export const matchFind = () => async dispatch => {
   const matchActions = (await matchFinder.next()).value;
 };
 
-export const attack = () => async dispatch => {
+export const attack = ({ point, value }) => async dispatch => {
+  if (!matchEmmiter) {
+    throw new Error('matchEmmiter is not defined');
+  }
+
+  const attack = matchEmmiter(MATCH_ATTACK, { point, x, y, coords, spell });
+
   dispatch({
-    type: 'match/ATTACK',
-    payload: {},
+    type: MATCH_ATTACK,
+    payload: attack,
   });
 };
 
-export const cast = () => async dispatch => {
+export const cast = ({ point, x, y, coords, spell }) => async dispatch => {
+  if (!matchEmmiter) {
+    throw new Error('matchEmmiter is not defined');
+  }
+
+  const cast = matchEmmiter(MATCH_CAST, { point, x, y, coords, spell });
+
   dispatch({
-    type: 'match/CAST',
-    payload: {},
+    type: MATCH_CAST,
+    payload: cast,
   });
 };
 
 export default (state = initialState, { type, payload }) => {
   switch (type) {
-    case 'match/SEARCH_START':
+    case MATCH_SEARCH_START:
       return {
         ...state,
         isSearching: true,
       };
-    case 'match/SEACRH_SUCCESS':
+    case MATCH_SEARCH_SUCCESS:
       return {
         ...state,
+        enemy: payload.enemy,
+        match: payload.match,
         isSearching: false,
       };
-    case 'match/DETAILS':
-      return {};
+    case MATCH_ENTER:
+      return {
+        ...state,
+      };
     case 'match/ENVIRONMENT':
       return {};
-    case 'match/ATTACK':
+    case MATCH_ATTACK:
       return {
         ...state,
         history: [
@@ -87,7 +111,7 @@ export default (state = initialState, { type, payload }) => {
           },
         ],
       };
-    case 'match/CAST':
+    case MATCH_CAST:
       return {
         ...state,
         history: [

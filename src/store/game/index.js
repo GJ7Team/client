@@ -1,4 +1,6 @@
-import * as actions from '../api';
+import emit from '../api';
+
+const GAME_ENTER = 'game/ENTER';
 
 const initialState = {
   player: {
@@ -13,19 +15,19 @@ const initialState = {
 export const gameSelector = state => state.game;
 
 export const gameEnter = ({ name }) => async dispatch => {
-  const game = await actions.gameEnter({
+  const game = await emit(GAME_ENTER, {
     name: !name.trim() ? 'anon-pidor' : name,
   });
 
   dispatch({
-    type: 'game/ENTER',
+    type: GAME_ENTER,
     payload: game,
   });
 };
 
 export default (state = initialState, { type, payload }) => {
   switch (type) {
-    case 'game/ENTER':
+    case GAME_ENTER:
       return {
         player: {
           id: payload.id,
