@@ -1,0 +1,29 @@
+{
+  "name": "pl-jam",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack --watch",
+    "build": "webpack",
+    "serve": "browser-sync start --server --files=\"**/*.js\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bo-ora/pl-jam.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bo-ora/pl-jam/issues"
+  },
+  "homepage": "https://github.com/bo-ora/pl-jam#readme",
+  "dependencies": {
+    "babel": "^6.23.0",
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.0.0",
+    "browser-sync": "^2.18.12",
+    "webpack": "^2.6.1"
+  }
+}
