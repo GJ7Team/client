@@ -84,6 +84,8 @@ export default class Colony extends Phaser.Sprite {
         createBacteria(this.x, this.y, this.game, bacteries, frame);
       }
 
+      this._stopShowingAttackDirection();
+
       setTimeout(() => {
         bacteries.forEach((bacteria) => {
            bacteria.body.velocity.setTo(0,0);
