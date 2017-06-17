@@ -1,4 +1,5 @@
 import Colony from 'classes/colony';
+import EventsCaptureManager from 'classes/eventsCaptureManager';
 
 export default {
   preload: function() {
@@ -18,6 +19,16 @@ export default {
     this.game.add.image(0, 0, 'background');
 
     this._loadLevel(this.game.cache.getJSON('level:1'));
+
+    this._initUserInteractions();
+  },
+
+  update: function () {
+    
+  },
+
+  render: function() {
+    this.captureManager.render();
   },
 
   _loadLevel: function (data) {
@@ -33,5 +44,9 @@ export default {
   _spawnColony: function (colony) {
     const sprite = new Colony(this.game, colony.x, colony.y, colony.image, colony.type);
     this.colonies.add(sprite);
+  },
+
+  _initUserInteractions() {
+    this.captureManager = new EventsCaptureManager(this.game, this.colonies);
   }
 };

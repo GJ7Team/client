@@ -1,6 +1,7 @@
 import { GLOBAL_SPEED } from '../constants';
 
-const INITIAL_POWER = 10;
+const INITIAL_ACTIVE_POWER = 10;
+const INITIAL_NEUTRAL_POWER = 0;
 const ATTACK_MODIFICATOR = 0.65;
 const MIN_ATTACK_REQUIREMENT = 25;
 const SPAWN_INTERVAL = Math.round(1000 / GLOBAL_SPEED);
@@ -15,7 +16,7 @@ export default class Colony extends Phaser.Sprite {
   constructor(game, x, y, imageName, type) {
     super(game, x, y, imageName);
 
-    this.power = INITIAL_POWER;
+    this.power = type === TYPES.neutral ? INITIAL_NEUTRAL_POWER : INITIAL_ACTIVE_POWER;
     this.type = type;
 
     this._createCounter();
