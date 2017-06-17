@@ -38,7 +38,6 @@ export default {
       0
     );
     button1.name = 'Play';
-    button1.angle = 360 / Math.random();
     button1.anchor.setTo(0.5, 0.5);
     button1.scale.setTo(1.5, 1.5);
 
@@ -54,8 +53,6 @@ export default {
       0
     );
     button2.name = 'Video';
-    // button2.angle = 24;
-    button2.angle = 360 / Math.random();
     button2.anchor.setTo(0.5, 0.5);
   },
 };

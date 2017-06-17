@@ -249,9 +249,9 @@ export default class Colony extends Phaser.Sprite {
   }
 
   _canAttack() {
-    // return true;
-    const isAlly = this.type === COLONY_TYPES.ally;
-    return isAlly && this.power >= MIN_ATTACK_REQUIREMENT;
+    return true;
+    // const isAlly = this.type === COLONY_TYPES.ally;
+    // return isAlly && this.power >= MIN_ATTACK_REQUIREMENT;
   }
 
   _colonyIsActive() {
