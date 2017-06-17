@@ -11,6 +11,7 @@ export default class EventsCaptureManager {
 
     //  Enable input
     this.enableInput();
+    this.winTimeout;
 
     // FAKE SERVER IVENTS EMITER
     let interval = 500;
@@ -47,6 +48,9 @@ export default class EventsCaptureManager {
   }
 
   checkWinState() {
+    if (this.winTimeout) {
+      clearTimeout(this.winTimeout);
+    }
     let hasEnemy = false;
     let hasSelf = false;
     this.colonies.forEach(c => {
@@ -61,14 +65,14 @@ export default class EventsCaptureManager {
     if (!hasEnemy) {
       // TODO CHECK enemy colonies in progress
       console.error('TODO SERVER - WIN STATE');
-      setTimeout(() => goToResultState(this.game), 2000);
+      this.winTimeout = setTimeout(() => goToResultState(this.game), 4000);
     }
 
     if (!hasSelf) {
       // TODO CHECK enemy colonies in progress
       // LOSE
       console.error('TODO SERVER - LOOSE STATE');
-      setTimeout(() => goToResultState(this.game), 2000);
+      this.winTimeout = setTimeout(() => goToResultState(this.game), 4000);
     }
   }
 
