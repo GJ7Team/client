@@ -1,8 +1,12 @@
 const { resolve } = require('path');
 const webpack = require('webpack');
 
+var root = __dirname;
+var rootSrc = resolve(root, './src');
+
 module.exports = function() {
   return {
+    context: rootSrc,
     bail: true,
     devtool: false,
     entry: {

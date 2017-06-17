@@ -86,6 +86,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_classes_colony__ = __webpack_require__(/*! classes/colony */ 2);
+
+
 /* harmony default export */ __webpack_exports__["a"] = ({
   preload: function () {
     // background
@@ -107,11 +110,18 @@ return /******/ (function(modules) { // webpackBootstrap
   },
 
   _loadLevel: function (data) {
+    // spawn colonies
+    this.colonies = this.game.add.group();
+    this._spawnColonies({ colonies: data.colonies });
+  },
+
+  _spawnColonies: function (data) {
     data.colonies.forEach(this._spawnColony, this);
   },
 
   _spawnColony: function (colony) {
-    this.game.add.sprite(colony.x, colony.y, colony.image);
+    const sprite = new __WEBPACK_IMPORTED_MODULE_0_classes_colony__["a" /* default */](this.game, colony.x, colony.y, colony.image);
+    this.colonies.add(sprite);
   }
 });
 
@@ -273,6 +283,24 @@ const STATES = {
     VIDEO: 'video'
 };
 /* harmony export (immutable) */ __webpack_exports__["a"] = STATES;
+
+
+/***/ }),
+/* 2 */
+/* exports provided: default */
+/* exports used: default */
+/*!*******************************!*\
+  !*** ./src/classes/colony.js ***!
+  \*******************************/
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+class Colony extends Phaser.Sprite {
+  constructor(game, x, y, imageName) {
+    super(game, x, y, imageName);
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Colony;
 
 
 /***/ })

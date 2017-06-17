@@ -1,3 +1,5 @@
+import Colony from 'classes/colony';
+
 export default {
   preload: function() {
     // background
@@ -19,10 +21,17 @@ export default {
   },
 
   _loadLevel: function (data) {
+    // spawn colonies
+    this.colonies = this.game.add.group();
+    this._spawnColonies({ colonies: data.colonies });
+  },
+
+  _spawnColonies: function (data) {
     data.colonies.forEach(this._spawnColony, this);
   },
 
   _spawnColony: function (colony) {
-    this.game.add.sprite(colony.x, colony.y, colony.image);
+    const sprite = new Colony(this.game, colony.x, colony.y, colony.image);
+    this.colonies.add(sprite);
   }
 };
