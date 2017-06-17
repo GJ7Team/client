@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "postinstsall": "webpack",
-    "start": "browser-sync start --server --files=src",
+    "start": "browser-sync start --server --files=src --port 8080",
     "dev": "webpack --watch",
     "serve": "browser-sync start --server --files=src",
     "build": "webpack",
