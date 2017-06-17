@@ -77,20 +77,20 @@ export default class Colony extends Phaser.Sprite {
 
       const bacteries = this.game.add.group();
       bacteries.enableBody = true;
-      const frame = Math.round(4/Math.random());
+      const frame = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
       for (let i = 0; i < attackPower; i++) {
         createBacteria(this.game, bacteries, frame);
       }
     }
 
-    function createBacteria(game, bacteries, frame = 0) {
+    function createBacteria(game, bacteries, frame) {
       var bacteria = bacteries.create(game.world.randomX, game.world.randomY, 'bacteria');
       bacteria.name = `Bacteria-${bacteries.length}`;
       bacteria.body.collideWorldBounds = true;
       // bacteria.body.bounce.setTo(0.8, 0.8);
       bacteria.body.velocity.setTo(10 + Math.random() * 40, 10 + Math.random() * 40);
       bacteria.frame = frame;
-      bacteria.scale.setTo(0.1, 0.1);
+      bacteria.scale.setTo(0.2, 0.2);
     }
   }
 
