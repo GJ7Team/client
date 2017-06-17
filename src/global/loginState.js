@@ -21,6 +21,7 @@ export default {
     this.input.update();
 
     if (this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)) {
+      // login();
       console.warn('enter', this.input.value);
     }
   },
@@ -32,11 +33,10 @@ export default {
     game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 
     // Stretch to fill
-    game.input.onDown.addOnce(toggleFullScreen, this);
+    // game.input.onDown.addOnce(toggleFullScreen, this);
 
     const background = game.add.sprite(0, 0, 'background');
     background.name = 'background';
-
     const button1 = game.add.button(
       game.world.centerX,
       game.world.centerY * 0.5,

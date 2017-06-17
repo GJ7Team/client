@@ -16,7 +16,9 @@ export default class Colony extends Phaser.Sprite {
   constructor(game, x, y, imageName, type) {
     super(game, x, y, imageName);
 
-    this.power = type === TYPES.neutral ? INITIAL_NEUTRAL_POWER : INITIAL_ACTIVE_POWER;
+    this.power = type === TYPES.neutral
+      ? INITIAL_NEUTRAL_POWER
+      : INITIAL_ACTIVE_POWER;
     this.type = type;
 
     this._createCounter();
@@ -35,11 +37,11 @@ export default class Colony extends Phaser.Sprite {
 
   _createCounter() {
     const style = {
-      font: "14px Arial",
-      fill: "#000",
+      font: '14px Arial',
+      fill: '#000',
       wordWrap: true,
       wordWrapWidth: this.width,
-      align: "center",
+      align: 'center',
     };
 
     this.text = this.game.add.text(0, 0, this.power, style);
@@ -57,7 +59,6 @@ export default class Colony extends Phaser.Sprite {
 
   _spawn = () => {
     this._changePower(SPAWN_AMOUNT);
-
   };
 
   // @TODO: consume from colony power 60%
@@ -84,11 +85,18 @@ export default class Colony extends Phaser.Sprite {
     }
 
     function createBacteria(game, bacteries, frame) {
-      var bacteria = bacteries.create(game.world.randomX, game.world.randomY, 'bacteria');
+      var bacteria = bacteries.create(
+        game.world.randomX,
+        game.world.randomY,
+        'bacteria'
+      );
       bacteria.name = `Bacteria-${bacteries.length}`;
       bacteria.body.collideWorldBounds = true;
       // bacteria.body.bounce.setTo(0.8, 0.8);
-      bacteria.body.velocity.setTo(10 + Math.random() * 40, 10 + Math.random() * 40);
+      bacteria.body.velocity.setTo(
+        10 + Math.random() * 40,
+        10 + Math.random() * 40
+      );
       bacteria.frame = frame;
       bacteria.scale.setTo(0.2, 0.2);
     }
