@@ -44,6 +44,8 @@ export default {
   create: function() {
     this.game.add.image(0, 0, 'background');
 
+    this.graphicsCanvas = this.game.add.graphics(0, 0);
+
     var music = this.game.add.audio('game');
     // music.play();
 
@@ -65,7 +67,9 @@ export default {
     this._initUserInteractions();
   },
 
-  update: function() {},
+  update: function () {
+    this.captureManager.update();
+  },
 
   render: function() {
     this.captureManager.render();
@@ -87,7 +91,8 @@ export default {
       colony.x,
       colony.y,
       colony.image,
-      colony.type
+      colony.type,
+      this.graphicsCanvas
     );
     this.colonies.add(sprite);
   },

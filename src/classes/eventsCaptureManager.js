@@ -5,8 +5,6 @@ export default class EventsCaptureManager {
 
     //  Enable input
     this.enableInput();
-
-    // this.result = 'Drag a sprite';
   }
 
   enableInput() {
@@ -15,20 +13,42 @@ export default class EventsCaptureManager {
       colony.inputEnabled = true;
     });
 
+    this.colonies.onChildInputDown.add(this.onDown, this);
     this.colonies.onChildInputUp.add(this.onUp, this);
+  }
+
+  onDown(colony, pointer) {
+    // setup attack direction
+    this.game.input.addMoveCallback(this.onMouseMove, this);
+    this.activeColony = colony;
+    this.activeColony._startShowingAttackDirection();
   }
 
   onUp(sprite, pointer) {
     const sourceColony = sprite;
     const targetColony = this.getTargetColony(pointer);
 
-    this.checkAttackCondition(sourceColony, targetColony);
+    if (this.attackIsAllowed(sourceColony, targetColony)) {
+      sourceColony._attack(targetColony);
+    } else {
+      sourceColony._stopShowingAttackDirection();
+    }
+
+    this.game.input.deleteMoveCallback(this.onMouseMove, this);
+    this.activeColony = null;
   }
 
-  checkAttackCondition(sourceColony, targetColony) {
-    if (sourceColony && targetColony && sourceColony !== targetColony) {
-      sourceColony._attack(targetColony);
+  // uodate attack direction
+  onMouseMove(event) {
+    if (!this.activeColony) {
+      return false;
     }
+
+    this.activeColony._updateAttackDirection(event);
+  }
+
+  attackIsAllowed(sourceColony, targetColony) {
+    return sourceColony && targetColony && sourceColony !== targetColony;
   }
 
   getTargetColony(pointer) {
@@ -47,6 +67,10 @@ export default class EventsCaptureManager {
     }
 
     return null;
+  }
+
+  update() {
+
   }
 
   render() {

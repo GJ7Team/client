@@ -3,7 +3,7 @@ import { GLOBAL_SPEED } from '../constants';
 const INITIAL_ACTIVE_POWER = 10;
 const INITIAL_NEUTRAL_POWER = 0;
 const ATTACK_MODIFICATOR = 0.65;
-const MIN_ATTACK_REQUIREMENT = 25;
+const MIN_ATTACK_REQUIREMENT = 10;
 const SPAWN_INTERVAL = Math.round(1000 / GLOBAL_SPEED);
 const SPAWN_AMOUNT = 1;
 const TYPES = {
@@ -13,13 +13,14 @@ const TYPES = {
 };
 
 export default class Colony extends Phaser.Sprite {
-  constructor(game, x, y, imageName, type) {
+  constructor(game, x, y, imageName, type, graphicsCanvas) {
     super(game, x, y, imageName);
 
     this.power = type === TYPES.neutral
       ? INITIAL_NEUTRAL_POWER
       : INITIAL_ACTIVE_POWER;
     this.type = type;
+    this.graphicsCanvas = graphicsCanvas;
 
     this._createCounter();
 
@@ -111,8 +112,9 @@ export default class Colony extends Phaser.Sprite {
   }
 
   _canAttack() {
-    return true;
-    // return this.power >= MIN_ATTACK_REQUIREMENT;
+    // return true;
+    const isAlly = this.type === TYPES.ally;
+    return isAlly && this.power >= MIN_ATTACK_REQUIREMENT;
   }
 
   _colonyIsActive() {
@@ -134,5 +136,28 @@ export default class Colony extends Phaser.Sprite {
     }
 
     return this.power;
+  }
+
+  // @TODO: check https://codepen.io/ada-lovecraft/pen/dAjDp
+  _startShowingAttackDirection() {
+    if (!this._canAttack()) {
+      return false;
+    }
+
+    this.graphicsCanvas.clear();
+    this.graphicsCanvas.lineStyle(10, 0xffd900, 1);
+    this.graphicsCanvas.moveTo(this.x + this.width / 2 , this.y + this.height / 2);
+  }
+
+  _updateAttackDirection(event) {
+    if (!this._canAttack()) {
+      return false;
+    }
+    this.graphicsCanvas.moveTo(this.x + this.width / 2 , this.y + this.height / 2);
+    this.graphicsCanvas.lineTo(event.x, event.y);
+  }
+
+  _stopShowingAttackDirection() {
+    this.graphicsCanvas.clear();
   }
 }
