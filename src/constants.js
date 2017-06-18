@@ -28,6 +28,11 @@ export const BACTERIA_TYPE_TO_IMAGE = {
   [BACTERIA_TYPES.enemy]: 'bacteria:enemy',
 };
 
+export const SUPER_BACTERIA_TYPE_TO_IMAGE = {
+  [BACTERIA_TYPES.ally]: 'superBacteria:ally',
+  [BACTERIA_TYPES.enemy]: 'superBacteria:enemy',
+};
+
 export const GLOBAL_SPEED = 1;
 
 export const WORLD_SIZE = {
