@@ -183,7 +183,7 @@ export default {
 
     return take(normalized, 10).map(entry => [
       entry.index,
-      entry.name,
+      processName(entry.name),
       entry.score,
     ]);
   },
@@ -194,3 +194,11 @@ export default {
     // }
   },
 };
+
+function processName(name) {
+  if (name.toLowerCase() === 'suka') {
+    return 'REDISKA';
+  }
+
+  return name;
+}
