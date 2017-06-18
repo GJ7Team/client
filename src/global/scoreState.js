@@ -54,7 +54,7 @@ export default {
   _loadRatings() {
     const style = {
       font: '16px Courier bold',
-      fill: COLORS.darkred,
+      fill: COLORS.red,
       tabs: [200, 200],
     };
     const ratings = this._getRatings();
@@ -76,7 +76,7 @@ export default {
 
     this.scoresText = this.game.add.text(textX, textY + headingsHeight, '', {
       ...style,
-      fill: COLORS.darkorchid,
+      fill: COLORS.white,
     });
     this.scoresText.parseList(ratings);
     this.scoresText.anchor.set(0.5, 0, 5);
