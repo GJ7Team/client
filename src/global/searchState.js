@@ -22,6 +22,7 @@ export default {
   update: function() {},
 
   create: function() {
+    this.game.stage.disableVisibilityChange = true;
     initScaling(this.game).create();
     const background = this.game.add.sprite(0, 0, 'background');
 

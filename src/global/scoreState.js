@@ -23,6 +23,8 @@ export default {
 
   create: function() {
     initScaling(this.game).create();
+
+    this.game.stage.disableVisibilityChange = true;
     const background = this.game.add.sprite(0, 0, 'background');
 
     addGradientText(this.game, {
