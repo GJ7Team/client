@@ -33,7 +33,7 @@ export default {
 
   create: function() {
     const game = this.game;
-    initScaling(game).create();
+    initScaling(this.game).create();
 
     const background = game.add.sprite(0, 0, 'background');
     background.name = 'background';

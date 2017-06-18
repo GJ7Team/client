@@ -61,6 +61,8 @@ export default {
 
   create: function() {
     initScaling(this.game).create();
+
+    this.game.stage.disableVisibilityChange = true;
     // background
     const randomIndex = getRandomInt(0, BG_SET.length - 1);
 
