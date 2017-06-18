@@ -110,8 +110,9 @@ function createSuperBacteria(x, y, game, bacteries, target, isAlly, power) {
   const Yvector = (target.y - bacteria.y) * 0.2 + Math.random() * 100;
   // console.warn('Xvector', Xvector, 'Yvector', Yvector)
   bacteria.body.allowGravity = true;
-  const angle = bacteria.body.velocity.setTo(Xvector, Yvector);
-  // console.warn('angle', angle);
+  bacteria.body.velocity.setTo(Xvector, Yvector);
+  const angle = game.physics.arcade.angleToXY(bacteria, target.x, target.y);
+  bacteria.rotation = angle;
 
   bacteria.scale.setTo(0.8, 0.8);
   bacteria._power = power;
@@ -263,7 +264,7 @@ export default class Colony extends Phaser.Sprite {
     bacteries.enableBody = true;
 
     let speed = 60;
-    if (attackPower > 1) {
+    if (attackPower > 15) {
       createSuperBacteria(
         this.x,
         this.y,
@@ -304,6 +305,9 @@ export default class Colony extends Phaser.Sprite {
         bacteria => {
           bacteria.body.velocity.setTo(0, 0);
           this.game.physics.arcade.accelerateToObject(bacteria, target, speed);
+
+          // const angle = this.game.physics.arcade.angleToXY(bacteria, target.x, target.y);
+          // bacteria.rotation = angle;
         },
         this.game.physics.arcade,
         false,
