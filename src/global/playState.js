@@ -55,17 +55,19 @@ export default {
       'assets/images/colony_color/colony_green.png'
     );
 
+    this.game.load.image(
+      'bacteria:ally',
+      'assets/images/cell_color/cell_2/cell_2_green.png'
+    );
+    this.game.load.image(
+      'bacteria:enemy',
+      'assets/images/cell_color/cell_2/cell_2_red.png'
+    );
+
     // music
     this.game.load.audio('game', ['assets/audio/game.mp3']);
     this.game.load.audio('pick', ['assets/audio/pick.mp3']);
     this.game.load.audio('kick', ['assets/audio/kick.mp3']);
-
-    this.bacteria = this.game.load.spritesheet(
-      'bacteria',
-      'assets/spizjenoe/lineup.png',
-      200,
-      200
-    );
   },
 
   create: function() {
@@ -157,7 +159,6 @@ export default {
 
     this.game.physics.arcade.enable(sprite);
     sprite.anchor.setTo(0, 0);
-    // sprite.scale.setTo(0.5, 0,5);
     sprite.body.immovable = true;
     this.colonies.add(sprite);
   },

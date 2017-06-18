@@ -1,7 +1,9 @@
 import {
   GLOBAL_SPEED,
   COLONY_TYPES,
-  TYPE_TO_IMAGE,
+  BACTERIA_TYPES,
+  COLONY_TYPE_TO_IMAGE,
+  BACTERIA_TYPE_TO_IMAGE,
   ATTACK_DIRECTION_COLOR,
 } from '../constants';
 
@@ -73,8 +75,11 @@ function collisionHandler(colony, bacteria) {
   setTimeout(() => bacteria.kill(), 1);
 }
 
-function createBacteria(x, y, game, bacteries, target, frame) {
-  var bacteria = bacteries.create(x, y, 'bacteria');
+function createBacteria(x, y, game, bacteries, target, frame, isAlly) {
+  const bacteriaImage =
+    BACTERIA_TYPE_TO_IMAGE[BACTERIA_TYPES[isAlly ? 'ally' : 'enemy']];
+
+  var bacteria = bacteries.create(x, y, bacteriaImage);
   bacteria.name = `Bacteria-${bacteries.length}`;
   bacteria.body.collideWorldBounds = true;
 
@@ -90,7 +95,7 @@ function createBacteria(x, y, game, bacteries, target, frame) {
 
 export default class Colony extends Phaser.Sprite {
   constructor(game, x, y, imageName, type, bitmapData) {
-    const image = TYPE_TO_IMAGE[type];
+    const image = COLONY_TYPE_TO_IMAGE[type];
     super(game, x, y, imageName);
 
     this.power = type === COLONY_TYPES.neutral
@@ -158,7 +163,7 @@ export default class Colony extends Phaser.Sprite {
       newType
     );
     this.type = newType;
-    this.loadTexture(TYPE_TO_IMAGE[newType], 0);
+    this.loadTexture(COLONY_TYPE_TO_IMAGE[newType], 0);
     if (newType !== COLONY_TYPES.neutral && !this._hasSpawn()) {
       this._startSpawn();
     }
@@ -224,7 +229,15 @@ export default class Colony extends Phaser.Sprite {
 
       const frame = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
       for (let i = 0; i < attackPower; i++) {
-        createBacteria(this.x, this.y, this.game, bacteries, target, frame);
+        createBacteria(
+          this.x,
+          this.y,
+          this.game,
+          bacteries,
+          target,
+          frame,
+          this._isAlly()
+        );
       }
 
       if (this._isAlly()) {
