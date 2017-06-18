@@ -264,7 +264,7 @@ export default class Colony extends Phaser.Sprite {
     bacteries.enableBody = true;
 
     let speed = 60;
-    if (attackPower > 15) {
+    if (attackPower > 30) {
       createSuperBacteria(
         this.x,
         this.y,
