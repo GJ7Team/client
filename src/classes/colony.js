@@ -7,6 +7,7 @@ import {
   BACTERIA_TYPES,
   COLONY_TYPE_TO_IMAGE,
   BACTERIA_TYPE_TO_IMAGE,
+  SUPER_BACTERIA_TYPE_TO_IMAGE,
   ATTACK_DIRECTION_COLOR,
   INITIAL_ACTIVE_POWER,
 } from '../constants';
@@ -99,7 +100,7 @@ function createBacteria(x, y, game, bacteries, target, isAlly) {
 
 function createSuperBacteria(x, y, game, bacteries, target, isAlly, power) {
   const bacteriaImage =
-    BACTERIA_TYPE_TO_IMAGE[BACTERIA_TYPES[isAlly ? 'ally' : 'enemy']];
+    SUPER_BACTERIA_TYPE_TO_IMAGE[BACTERIA_TYPES[isAlly ? 'ally' : 'enemy']];
 
   var bacteria = bacteries.create(x, y, bacteriaImage);
   bacteria.name = `Bacteria-${bacteries.length}`;
@@ -262,7 +263,7 @@ export default class Colony extends Phaser.Sprite {
     bacteries.enableBody = true;
 
     let speed = 60;
-    if (attackPower > 50) {
+    if (attackPower > 1) {
       createSuperBacteria(
         this.x,
         this.y,

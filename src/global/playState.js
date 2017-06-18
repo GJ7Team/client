@@ -55,6 +55,7 @@ export default {
       'assets/images/colony_color/colony_green.png'
     );
 
+    // bacteria
     this.game.load.image(
       'bacteria:ally',
       'assets/images/cell_color/cell_2/cell_2_green.png'
@@ -62,6 +63,16 @@ export default {
     this.game.load.image(
       'bacteria:enemy',
       'assets/images/cell_color/cell_2/cell_2_red.png'
+    );
+
+    // super bacteria
+    this.game.load.image(
+      'superBacteria:ally',
+      'assets/images/cell_color/cell_2/super_cell_2_green.png'
+    );
+    this.game.load.image(
+      'superBacteria:enemy',
+      'assets/images/cell_color/cell_2/super_cell_2_red.png'
     );
 
     // music
