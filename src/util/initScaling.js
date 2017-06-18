@@ -13,7 +13,7 @@ export default function initScaling(game) {
         if (game.scale.isFullScreen) {
             // game.scale.stopFullScreen();
         } else {
-            game.scale.startFullScreen(false);
+            // game.scale.startFullScreen(false);
         }
     }
 }
