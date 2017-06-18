@@ -86,8 +86,9 @@ export default {
     // music.play();
 
     const match = selectors.match();
-    this._loadLevel(match.match.map);
-    // this._loadLevel(this.game.cache.getJSON('level:1'));
+
+    // this._loadLevel(match.match.map);
+    this._loadLevel(this.game.cache.getJSON('level:1'));
 
     const backButton = this.game.add.button(
       10,
