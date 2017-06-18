@@ -15,7 +15,7 @@ export default {
 
     this.button = this.game.load.spritesheet(
       'back',
-      'assets/buttons/button_sprite_sheet.png',
+      'assets/buttons/back.png',
       193,
       71
     );
