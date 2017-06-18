@@ -104,8 +104,8 @@ export default {
 
     const match = selectors.match();
 
-    //this._loadLevel(match.map);
-    this._loadLevel(this.game.cache.getJSON('level:1'));
+    this._loadLevel(match.map);
+    // this._loadLevel(this.game.cache.getJSON('level:1'));
 
     const backButton = this.game.add.button(
       10,
@@ -154,7 +154,8 @@ export default {
       colony.y,
       colony.image,
       colony.type,
-      this.bitmapData
+      this.bitmapData,
+      colony.id
     );
 
     this.game.physics.arcade.enable(sprite);

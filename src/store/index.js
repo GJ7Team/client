@@ -4,7 +4,13 @@ import thunkMiddleware from 'redux-thunk';
 import loggerMiddleware from 'redux-logger';
 
 import gameReducer, { gameSelector, gameEnter, myNameSelector } from './game';
-import matchReducer, { matchSelector, matchFind, attack, cast } from './match';
+import matchReducer, {
+  matchSelector,
+  matchFind,
+  attack,
+  subscribeAttack,
+  cast,
+} from './match';
 
 const rootReducer = combineReducers({
   game: gameReducer,
@@ -34,6 +40,9 @@ export const actions = {
   },
   attack: (...args) => {
     return store.dispatch(attack(...args));
+  },
+  subscribeAttack(res) {
+    subscribeAttack(res);
   },
   cast: (...args) => {
     return store.dispatch(cast(...args));

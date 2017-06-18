@@ -1,8 +1,9 @@
 import { COLONY_TYPES, STATES } from '../constants';
+import { actions } from '../store';
 import gameState from 'services/gameState';
 
 function goToResultState(game, resultData) {
-  gameState.setResult(resultData)
+  gameState.setResult(resultData);
   game.state.start(STATES.RESULT);
 }
 
@@ -46,7 +47,23 @@ export default class EventsCaptureManager {
       }
       setTimeout(superAI, interval);
     };
-    superAI();
+
+    actions.subscribeAttack(({ fromColonyId, toColonyId }) => {
+      let fromColony = null;
+      let toColony = null;
+
+      this.colonies.forEach(c => {
+        if (c.id === fromColonyId) {
+          fromColony = c;
+        }
+        if (c.id === toColonyId) {
+          toColony = c;
+        }
+      });
+
+      fromColony._enemyAttack(toColony);
+    });
+    // superAI();
   }
 
   checkWinState() {
@@ -67,18 +84,26 @@ export default class EventsCaptureManager {
     if (!hasEnemy) {
       // TODO CHECK enemy colonies in progress
       console.error('TODO SERVER - WIN STATE');
-      this.winTimeout = setTimeout(() => goToResultState(this.game, {
-        win: true,
-      }), 4000);
+      this.winTimeout = setTimeout(
+        () =>
+          goToResultState(this.game, {
+            win: true,
+          }),
+        4000
+      );
     }
 
     if (!hasSelf) {
       // TODO CHECK enemy colonies in progress
       // LOSE
       console.error('TODO SERVER - LOOSE STATE');
-      this.winTimeout = setTimeout(() => goToResultState(this.game, {
-        win: false,
-      }), 4000);
+      this.winTimeout = setTimeout(
+        () =>
+          goToResultState(this.game, {
+            win: false,
+          }),
+        4000
+      );
     }
   }
 
@@ -103,6 +128,11 @@ export default class EventsCaptureManager {
     const targetColony = this.getTargetColony(pointer);
 
     if (this.attackIsAllowed(sourceColony, targetColony)) {
+      actions.attack({
+        fromColonyId: sourceColony.id,
+        toColonyId: targetColony.id,
+      });
+
       sourceColony._attack(targetColony);
     } else {
       sourceColony._stopShowingAttackDirection();

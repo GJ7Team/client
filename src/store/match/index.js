@@ -8,6 +8,7 @@ const MATCH_SEARCH_SUCCESS = 'match/SEARCH_SUCCESS';
 const MATCH_FOUND = 'match/FOUND';
 
 const MATCH_ATTACK = 'match/ATTACK';
+const MATCH_ATTACK_ENEMY = 'match/ATTACK_ENEMY';
 const MATCH_CAST = 'match/CAST';
 
 const initialState = {
@@ -52,17 +53,35 @@ export const matchFind = () => async dispatch => {
   // const matchActions = (await matchFinder.next()).value;
 };
 
-export const attack = ({ point, value }) => async dispatch => {
+// export const attack = ({ point, value }) => async dispatch => {
+export const attack = ({ fromColonyId, toColonyId }) => async dispatch => {
   if (!matchEmmiter) {
     throw new Error('matchEmmiter is not defined');
   }
 
-  const attack = matchEmmiter(MATCH_ATTACK, { point, x, y, coords, spell });
+  // const attack = matchEmmiter(MATCH_ATTACK, { point, x, y, coords, spell });
+  const attack = matchEmmiter(MATCH_ATTACK, {
+    fromColonyId,
+    toColonyId,
+  });
 
   dispatch({
     type: MATCH_ATTACK,
     payload: attack,
   });
+};
+
+export const subscribeAttack = res => {
+  if (!matchEmmiter) {
+    throw new Error('matchEmmiter is not defined');
+  }
+
+  // dispatch({
+  //   type: MATCH_ATTACK_ENEMY,
+  //   payload: attack,
+  // });
+
+  matchSocket.on(MATCH_ATTACK, res);
 };
 
 export const cast = ({ point, x, y, coords, spell }) => async dispatch => {
@@ -89,6 +108,8 @@ export default (state = initialState, { type, payload }) => {
     case MATCH_SEARCH_SUCCESS:
       return {
         ...state,
+        leftId: payload.leftId,
+        rightId: payload.rightId,
         enemy: payload.enemy,
         map: payload.map,
         isSearching: false,
@@ -102,11 +123,12 @@ export default (state = initialState, { type, payload }) => {
         },
       };
 
+    case MATCH_ATTACK_ENEMY:
     case MATCH_ATTACK:
       return {
         ...state,
         history: [
-          ...sate.history,
+          ...state.history,
           {
             type: 'attack',
             value: payload,
@@ -117,7 +139,7 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         history: [
-          ...sate.history,
+          ...state.history,
           {
             type: 'cast',
             value: payload,
