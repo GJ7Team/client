@@ -205,6 +205,7 @@ export default class Colony extends Phaser.Sprite {
     if (newType === COLONY_TYPES.neutral && this._hasSpawn()) {
       this._stopSpawn();
     }
+
     this.eventsCaptureManger.checkWinState();
   }
 

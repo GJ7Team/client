@@ -1,5 +1,8 @@
 import values from 'lodash/values';
 import take from 'lodash/take';
+import reduce from 'lodash/reduce';
+import map from 'lodash/map';
+import sortBy from 'lodash/sortBy';
 import { actions, selectors } from '../store';
 import { STATES, COLORS } from '../constants';
 import { addGradientText } from 'util/text';
@@ -22,9 +25,6 @@ export default {
   },
 
   create: function() {
-    const game = selectors.game();
-    console.log(game);
-
     initScaling(this.game).create();
 
     this.game.stage.disableVisibilityChange = true;
@@ -58,10 +58,11 @@ export default {
     const style = {
       font: '16px Courier bold',
       fill: COLORS.red,
-      tabs: [200, 200],
+      tabs: [50, 200, 200],
     };
     const ratings = this._getRatings();
-    const headings = ['Name', 'Score'];
+
+    const headings = ['#', 'Name', 'Score'];
     const textX = this.game.world.centerX;
     const textY = 70;
     const headingsHeight = 50;
@@ -86,67 +87,105 @@ export default {
   },
 
   _getRatings() {
-    const RATINGS = [
-      {
-        name: 'Витя',
-        score: 100500,
-      },
-      {
-        name: 'Семен',
-        score: 100000,
-      },
-      {
-        name: 'Евген',
-        score: 500,
-      },
-      {
-        name: 'Валерий С.',
-        score: 100500,
-      },
-      {
-        name: 'Наташа',
-        score: 100000,
-      },
-      {
-        name: 'Борик',
-        score: 500,
-      },
-      {
-        name: 'Степашка',
-        score: 100500,
-      },
-      {
-        name: 'Витя',
-        score: 100500,
-      },
-      {
-        name: 'Семен',
-        score: 100000,
-      },
-      {
-        name: 'Евген',
-        score: 500,
-      },
-      {
-        name: 'Валерий С.',
-        score: 100500,
-      },
-      {
-        name: 'Наташа',
-        score: 100000,
-      },
-      {
-        name: 'Борик',
-        score: 500,
-      },
-      {
-        name: 'Степашка',
-        score: 100500,
-      },
-    ];
-    const processed = RATINGS.map(entry => values(entry));
+    // const RATINGS = [
+    //   {
+    //     name: 'Витя',
+    //     score: 100500,
+    //   },
+    //   {
+    //     name: 'Семен',
+    //     score: 100000,
+    //   },
+    //   {
+    //     name: 'Евген',
+    //     score: 500,
+    //   },
+    //   {
+    //     name: 'Валерий С.',
+    //     score: 100500,
+    //   },
+    //   {
+    //     name: 'Наташа',
+    //     score: 100000,
+    //   },
+    //   {
+    //     name: 'Борик',
+    //     score: 500,
+    //   },
+    //   {
+    //     name: 'Степашка',
+    //     score: 100500,
+    //   },
+    //   {
+    //     name: 'Витя',
+    //     score: 100500,
+    //   },
+    //   {
+    //     name: 'Семен',
+    //     score: 100000,
+    //   },
+    //   {
+    //     name: 'Евген',
+    //     score: 500,
+    //   },
+    //   {
+    //     name: 'Валерий С.',
+    //     score: 100500,
+    //   },
+    //   {
+    //     name: 'Наташа',
+    //     score: 100000,
+    //   },
+    //   {
+    //     name: 'Борик',
+    //     score: 500,
+    //   },
+    //   {
+    //     name: 'Степашка',
+    //     score: 100500,
+    //   },
+    // ];
+    const game = selectors.game();
+    const { wins, looses } = game.stats;
 
-    return take(processed, 10);
+    const tmp = reduce(
+      wins,
+      (acc, value, key) => {
+        return {
+          ...acc,
+          [key]: +value - (looses[key] ? looses[key] : 0),
+        };
+      },
+      {}
+    );
+
+    // const sorted = sortBy(
+    //   map(tmp, (score, name) => {
+    //     return {
+    //       score,
+    //       name,
+    //     }
+    //   }),
+    //   (user) => user.score
+    // );
+
+    const sorted = map(tmp, (score, name) => {
+      return {
+        score,
+        name,
+      };
+    }).sort((a, b) => a.score < b.score);
+
+    const normalized = sorted.map((user, index) => ({
+      index: index + 1,
+      ...user,
+    }));
+
+    return take(normalized, 10).map(entry => [
+      entry.index,
+      entry.name,
+      entry.score,
+    ]);
   },
 
   update: function() {
