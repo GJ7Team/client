@@ -19,11 +19,12 @@ const RADIUS_DELTA = 10;
 const ANIMATION_REMOVAL_DELAY = 200;
 
 function enemyCollisionHandler(colony, bacteria) {
-  console.info('[bacterium] enmy colision');
+  console.info('[bacterium] enmy colision', bacteria._power);
+  const power = bacteria._power || 1;
 
   switch (colony.type) {
     case COLONY_TYPES.ally:
-      colony._changePower(-1);
+      colony._changePower(-power);
       if (colony.power === 0) {
         colony._changeType(COLONY_TYPES.neutral);
       }
@@ -33,11 +34,11 @@ function enemyCollisionHandler(colony, bacteria) {
       }
       break;
     case COLONY_TYPES.neutral:
-      colony._changePower(1);
+      colony._changePower(power);
       colony._changeType(COLONY_TYPES.enemy);
       break;
     case COLONY_TYPES.enemy:
-      colony._changePower(1);
+      colony._changePower(power);
       break;
     default:
       console.error('[bacterium] Unknown type %s', colony.type);
@@ -48,19 +49,20 @@ function enemyCollisionHandler(colony, bacteria) {
 }
 
 function collisionHandler(colony, bacteria) {
-  console.info('[bacterium] colision');
+  console.info('[bacterium] colision', bacteria._power);
   const kickMusic = this.game.add.audio('kick');
+  const power = bacteria._power || 1;
   switch (colony.type) {
     case COLONY_TYPES.ally:
-      colony._changePower(1);
+      colony._changePower(power);
       break;
     case COLONY_TYPES.neutral:
-      colony._changePower(1);
+      colony._changePower(power);
       colony._changeType(COLONY_TYPES.ally);
       break;
     case COLONY_TYPES.enemy:
       kickMusic.play();
-      colony._changePower(-1);
+      colony._changePower(-power);
       if (colony.power === 0) {
         colony._changeType(COLONY_TYPES.neutral);
       }
@@ -77,7 +79,7 @@ function collisionHandler(colony, bacteria) {
   setTimeout(() => bacteria.kill(), 1);
 }
 
-function createBacteria(x, y, game, bacteries, target, frame, isAlly) {
+function createBacteria(x, y, game, bacteries, target, isAlly) {
   const bacteriaImage =
     BACTERIA_TYPE_TO_IMAGE[BACTERIA_TYPES[isAlly ? 'ally' : 'enemy']];
 
@@ -91,8 +93,26 @@ function createBacteria(x, y, game, bacteries, target, frame, isAlly) {
   bacteria.body.allowGravity = true;
   bacteria.body.velocity.setTo(Xvector, Yvector);
 
-  bacteria.frame = frame;
   bacteria.scale.setTo(0.2, 0.2);
+}
+
+function createSuperBacteria(x, y, game, bacteries, target, isAlly, power) {
+  const bacteriaImage =
+    BACTERIA_TYPE_TO_IMAGE[BACTERIA_TYPES[isAlly ? 'ally' : 'enemy']];
+
+  var bacteria = bacteries.create(x, y, bacteriaImage);
+  bacteria.name = `Bacteria-${bacteries.length}`;
+  bacteria.body.collideWorldBounds = true;
+
+  const Xvector = (target.x - bacteria.x) * 0.2 + Math.random() * 100;
+  const Yvector = (target.y - bacteria.y) * 0.2 + Math.random() * 100;
+  // console.warn('Xvector', Xvector, 'Yvector', Yvector)
+  bacteria.body.allowGravity = true;
+  const angle = bacteria.body.velocity.setTo(Xvector, Yvector);
+  // console.warn('angle', angle);
+
+  bacteria.scale.setTo(0.8, 0.8);
+  bacteria._power = power;
 }
 
 export default class Colony extends Phaser.Sprite {
@@ -215,43 +235,49 @@ export default class Colony extends Phaser.Sprite {
   }
 
   // @TODO: consume from colony power 60%
-  // do not allow to _attack if colony power is not enough (25 poins min)
   _attack(target, options) {
-    // if (!target) {
-    //   return false;
-    // }
-
     const attackPower = Math.round(this.power * ATTACK_MODIFICATOR);
 
     const attacked = this._changePower(-attackPower);
     console.log(`attacked with [${attacked}] bacteria`);
 
-    const bacteries = this.game.add.group();
-    bacteries.enableBody = true;
-
-    const frame = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
-    for (let i = 0; i < attackPower; i++) {
-      createBacteria(
-        this.x,
-        this.y,
-        this.game,
-        bacteries,
-        target,
-        frame,
-        this._isAlly()
-      );
-    }
-    // =======
     if (this._isAlly()) {
       this._stopShowingAttackDirection(target);
     }
-    // >>>>>>> multiplayer
+
+    const bacteries = this.game.add.group();
+    bacteries.enableBody = true;
+
+    let speed = 60;
+    if (attackPower > 50) {
+        createSuperBacteria(
+          this.x,
+          this.y,
+          this.game,
+          bacteries,
+          target,
+          this._isAlly(),
+          attackPower
+        );
+        speed = 150;
+    } else {
+      for (let i = 0; i < attackPower; i++) {
+        createBacteria(
+          this.x,
+          this.y,
+          this.game,
+          bacteries,
+          target,
+          this._isAlly()
+        );
+      }
+    }
 
     setTimeout(() => {
       bacteries.forEach(
         bacteria => {
           bacteria.body.velocity.setTo(0, 0);
-          this.game.physics.arcade.accelerateToObject(bacteria, target, 60);
+          this.game.physics.arcade.accelerateToObject(bacteria, target, speed);
         },
         this.game.physics.arcade,
         false,
@@ -264,7 +290,6 @@ export default class Colony extends Phaser.Sprite {
     } else {
       this.colides.push({ colony: target, bacteries });
     }
-    // }
   }
 
   _canAttack() {
@@ -275,7 +300,6 @@ export default class Colony extends Phaser.Sprite {
 
   _colonyIsActive() {
     return this.type === COLONY_TYPES.ally || this.type === COLONY_TYPES.enemy;
-    return this._isAlly() || this.type === COLONY_TYPES.enemy;
   }
 
   _isAlly() {
