@@ -10,8 +10,6 @@ export function addGradientText(game, options = {}) {
     ...options,
   };
 
-  console.warn('options.text', normalized.text);
-  console.warn('game', game);
   const gameText = game.add.text(normalized.x, normalized.y, normalized.text);
   //  Centers the text
   gameText.anchor.set(0.5, 0.5);

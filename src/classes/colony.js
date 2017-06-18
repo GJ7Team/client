@@ -150,8 +150,9 @@ export default class Colony extends Phaser.Sprite {
     this.eventsCaptureManger = manger;
   }
 
-  serverTick() {
+  serverTick(options) {
     if (this._spawning) {
+      console.warn('serverTickOptions', options);
       this._spawn();
     }
   }

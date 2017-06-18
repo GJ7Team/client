@@ -84,8 +84,8 @@ export default class EventsCaptureManager {
     // }, 1000);
   }
 
-  serverTick() {
-    this.colonies.forEach(c => c.serverTick());
+  serverTick(options) {
+    this.colonies.forEach(c => c.serverTick(options));
   }
 
   checkWinState() {
