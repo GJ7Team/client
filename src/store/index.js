@@ -9,6 +9,7 @@ import matchReducer, {
   matchFind,
   attack,
   subscribeAttack,
+  subscribeMatchDisconnect,
   cast,
 } from './match';
 
@@ -43,6 +44,9 @@ export const actions = {
   },
   subscribeAttack(res) {
     subscribeAttack(res);
+  },
+  subscribeMatchDisconnect(res) {
+    subscribeMatchDisconnect(res);
   },
   cast: (...args) => {
     return store.dispatch(cast(...args));

@@ -1,9 +1,9 @@
 import Io from 'socket.io-client';
 import getUserLocalId from './utils/getUserLocalId';
 
-// const SOCKET_ENTRY_POINT = 'http://localhost:8080';
+const SOCKET_ENTRY_POINT = 'http://localhost:8080';
 
-const SOCKET_ENTRY_POINT = 'https://bacterium666.herokuapp.com';
+// const SOCKET_ENTRY_POINT = 'https://bacterium666.herokuapp.com';
 // const SOCKET_ENTRY_POINT = 'http://10.49.16.5:8080';
 
 const socket = Io(SOCKET_ENTRY_POINT);

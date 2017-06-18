@@ -1,4 +1,5 @@
 import { COLONY_TYPES, STATES } from '../constants';
+import { ATTACK_MODIFICATOR } from './colony';
 import { actions } from '../store';
 import gameState from 'services/gameState';
 
@@ -48,7 +49,11 @@ export default class EventsCaptureManager {
       setTimeout(superAI, interval);
     };
 
-    actions.subscribeAttack(({ fromColonyId, toColonyId }) => {
+    actions.subscribeMatchDisconnect(() => {
+      console.error('PLAYER LEFT. TODO YOU WIN');
+    });
+
+    actions.subscribeAttack(({ fromColonyId, toColonyId, attackPower }) => {
       let fromColony = null;
       let toColony = null;
 
@@ -61,7 +66,9 @@ export default class EventsCaptureManager {
         }
       });
 
-      fromColony._enemyAttack(toColony);
+      fromColony._enemyAttack(toColony, {
+        attackPower,
+      });
     });
     // superAI();
     setInterval(() => {
@@ -136,12 +143,17 @@ export default class EventsCaptureManager {
     const targetColony = this.getTargetColony(pointer);
 
     if (this.attackIsAllowed(sourceColony, targetColony)) {
+      const attackPower = Math.round(sourceColony.power * ATTACK_MODIFICATOR);
+
       actions.attack({
         fromColonyId: sourceColony.id,
         toColonyId: targetColony.id,
+        attackPower,
       });
 
-      sourceColony._attack(targetColony);
+      sourceColony._attack(targetColon, {
+        attackPower,
+      });
     } else {
       sourceColony._stopShowingAttackDirection();
     }

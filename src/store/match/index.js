@@ -54,7 +54,11 @@ export const matchFind = () => async dispatch => {
 };
 
 // export const attack = ({ point, value }) => async dispatch => {
-export const attack = ({ fromColonyId, toColonyId }) => async dispatch => {
+export const attack = ({
+  fromColonyId,
+  toColonyId,
+  attackPower,
+}) => async dispatch => {
   if (!matchEmmiter) {
     throw new Error('matchEmmiter is not defined');
   }
@@ -63,6 +67,7 @@ export const attack = ({ fromColonyId, toColonyId }) => async dispatch => {
   const attack = matchEmmiter(MATCH_ATTACK, {
     fromColonyId,
     toColonyId,
+    attackPower,
   });
 
   dispatch({
@@ -76,12 +81,15 @@ export const subscribeAttack = res => {
     throw new Error('matchEmmiter is not defined');
   }
 
-  // dispatch({
-  //   type: MATCH_ATTACK_ENEMY,
-  //   payload: attack,
-  // });
-
   matchSocket.on(MATCH_ATTACK, res);
+};
+
+export const subscribeMatchDisconnect = res => {
+  if (!matchEmmiter) {
+    throw new Error('matchEmmiter is not defined');
+  }
+
+  matchSocket.on('disconnect', res);
 };
 
 export const cast = ({ point, x, y, coords, spell }) => async dispatch => {

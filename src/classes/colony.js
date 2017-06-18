@@ -244,14 +244,15 @@ export default class Colony extends Phaser.Sprite {
     return this.spawnInterval > 0;
   };
 
-  _enemyAttack(target) {
+  _enemyAttack(target, options) {
     // EMENY Attack reversed for player
-    this._attack(target, { enemyAttack: true });
+    this._attack(target, { ...options, enemyAttack: true });
   }
 
   // @TODO: consume from colony power 60%
   _attack(target, options) {
-    const attackPower = Math.round(this.power * ATTACK_MODIFICATOR);
+    // const attackPower = Math.round(this.power * ATTACK_MODIFICATOR);
+    const attackPower = options.attackPower;
 
     const attacked = this._changePower(-attackPower);
     console.log(`attacked with [${attacked}] bacteria`);
