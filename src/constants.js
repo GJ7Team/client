@@ -4,6 +4,7 @@ export const STATES = {
   MENU: 'menuState',
   LOGIN: 'loginState',
   RESULT: 'resultState',
+  SCOREBOARD: 'scoreboardState',
 };
 
 export const COLONY_TYPES = {

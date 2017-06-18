@@ -8,6 +8,10 @@ function goToVideoState() {
   this.game.state.start(STATES.VIDEO);
 }
 
+function goToScoreboardState() {
+  this.game.state.start(STATES.SCOREBOARD);
+}
+
 export default {
   preload: function() {
     const game = this.game;
@@ -41,8 +45,23 @@ export default {
     button1.anchor.setTo(0.5, 0.5);
     button1.scale.setTo(1.5, 1.5);
 
-    //  Rotated button
+    //  SCOREBOARD BUTTON
     const button2 = game.add.button(
+      game.world.centerX,
+      game.world.centerY * 1.05,
+      'button',
+      goToScoreboardState.bind(this),
+      this,
+      2,
+      1,
+      0
+    );
+    button2.name = 'Scoreboard';
+    button2.anchor.setTo(0.5, 0.5);
+    button2.scale.setTo(1, 1);
+
+    //  Rotated button
+    const button3 = game.add.button(
       game.world.centerX,
       game.world.centerY * 1.5,
       'button',
@@ -52,7 +71,7 @@ export default {
       1,
       0
     );
-    button2.name = 'Video';
-    button2.anchor.setTo(0.5, 0.5);
+    button3.name = 'Video';
+    button3.anchor.setTo(0.5, 0.5);
   },
 };

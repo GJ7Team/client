@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/bo-ora/pl-jam#readme",
   "dependencies": {
+    "lodash": "^4.17.4",
     "redux": "^3.7.0",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
