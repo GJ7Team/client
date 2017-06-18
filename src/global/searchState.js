@@ -27,7 +27,7 @@ export default {
     const background = this.game.add.sprite(0, 0, 'background');
 
     addGradientText(this.game, {
-      text: 'Search match...',
+      text: 'Searching a match...',
     });
 
     this.game.input.activePointer.capture = true;
