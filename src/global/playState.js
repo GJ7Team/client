@@ -114,6 +114,7 @@ export default {
     gameMusic.play();
 
     const match = selectors.match();
+    debugger;
 
     this._loadLevel(match.map);
     // this._loadLevel(this.game.cache.getJSON('level:1'));
@@ -133,8 +134,10 @@ export default {
 
     // My name & enemy name
     const myName = selectors.getMyName();
+    const enemyName = match.enemy.name;
+
     addMyNameText(this.game, { text: myName });
-    addEnemyNameText(this.game, { text: myName });
+    addEnemyNameText(this.game, { text: enemyName });
 
     this._initUserInteractions();
   },
