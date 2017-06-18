@@ -1,5 +1,6 @@
 import { actions } from '../store';
 import { STATES } from '../constants';
+import initScaling from 'util/initScaling';
 
 function goToSeachMatch() {
   this.game.state.start(STATES.SEARCH_MATCH);
@@ -31,6 +32,7 @@ export default {
 
   create: function() {
     const game = this.game;
+    initScaling(this.game).create();
 
     const background = game.add.sprite(0, 0, 'background');
     background.name = 'background';

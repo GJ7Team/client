@@ -2,6 +2,7 @@ import { actions } from '../store';
 import { STATES } from '../constants';
 import { addGradientText } from 'util/text';
 import gameState from 'services/gameState';
+import initScaling from 'util/initScaling';
 
 export default {
   preload: function() {
@@ -15,6 +16,7 @@ export default {
   },
 
   create: function() {
+    initScaling(this.game).create();
     const background = this.game.add.sprite(0, 0, 'background');
     const resultData = gameState.getResult();
 

@@ -3,6 +3,7 @@ import take from 'lodash/take';
 import { actions } from '../store';
 import { STATES, COLORS } from '../constants';
 import { addGradientText } from 'util/text';
+import initScaling from 'util/initScaling';
 
 function goToMenuState() {
   this.game.state.start(STATES.MENU);
@@ -21,6 +22,7 @@ export default {
   },
 
   create: function() {
+    initScaling(this.game).create();
     const background = this.game.add.sprite(0, 0, 'background');
 
     addGradientText(this.game, {

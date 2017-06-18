@@ -25,10 +25,6 @@ start(() => {
     'game'
   );
 
-  // const scaleManager = new Phaser.ScaleManager(game, WORLD_SIZE.width, WORLD_SIZE.height);
-  // console.warn('scaleManager', scaleManager);
-  // scaleManager.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-
   const pluginManager = new Phaser.PluginManager(game);
   pluginManager.add(PhaserInput.Plugin);
 

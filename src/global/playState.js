@@ -3,6 +3,7 @@ import Colony from 'classes/colony';
 import { addMyNameText, addEnemyNameText } from 'util/text'
 import EventsCaptureManager from 'classes/eventsCaptureManager';
 import { STATES, WORLD_SIZE, ATTACK_DIRECTION_COLOR } from '../constants';
+import initScaling from 'util/initScaling';
 
 function goToMenuState() {
   this.game.state.start(STATES.MENU);
@@ -59,6 +60,7 @@ export default {
   },
 
   create: function() {
+    initScaling(this.game).create();
     // background
     const randomIndex = getRandomInt(0, BG_SET.length - 1);
 
@@ -89,8 +91,8 @@ export default {
 
     const match = selectors.match();
 
-    this._loadLevel(match.map);
-    // this._loadLevel(this.game.cache.getJSON('level:1'));
+    //this._loadLevel(match.map);
+    this._loadLevel(this.game.cache.getJSON('level:1'));
 
     const backButton = this.game.add.button(
       10,
