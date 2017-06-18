@@ -220,22 +220,7 @@ export default class Colony extends Phaser.Sprite {
     // if (!target) {
     //   return false;
     // }
-    //
-    // if (this._canAttack()) {
-    const attackPower = Math.round(this.power * ATTACK_MODIFICATOR);
 
-    const attacked = this._changePower(-attackPower);
-    console.log(`attacked with [${attacked}] bacteria`);
-
-    const bacteries = this.game.add.group();
-    bacteries.enableBody = true;
-
-    const frame = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
-    for (let i = 0; i < attackPower; i++) {
-      createBacteria(this.x, this.y, this.game, bacteries, target, frame);
-    }
-
-    // if (this._canAttack()) {
     const attackPower = Math.round(this.power * ATTACK_MODIFICATOR);
 
     const attacked = this._changePower(-attackPower);
