@@ -114,7 +114,6 @@ export default {
     gameMusic.play();
 
     const match = selectors.match();
-    debugger;
 
     this._loadLevel(match.map);
     // this._loadLevel(this.game.cache.getJSON('level:1'));
