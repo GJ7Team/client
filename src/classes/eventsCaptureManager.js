@@ -64,6 +64,14 @@ export default class EventsCaptureManager {
       fromColony._enemyAttack(toColony);
     });
     // superAI();
+    setInterval(() => {
+      // TODO fake server tick
+      this.serverTick();
+    }, 1000);
+  }
+
+  serverTick() {
+    this.colonies.forEach(c => c.serverTick());
   }
 
   checkWinState() {

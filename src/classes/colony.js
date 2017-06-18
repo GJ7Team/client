@@ -149,6 +149,12 @@ export default class Colony extends Phaser.Sprite {
     this.eventsCaptureManger = manger;
   }
 
+  serverTick() {
+    if (this._spawning) {
+      this._spawn();
+    }
+  }
+
   update() {
     this.text.x = Math.floor(this.center.x);
     this.text.y = Math.floor(this.center.y);
@@ -211,14 +217,11 @@ export default class Colony extends Phaser.Sprite {
   }
 
   _startSpawn() {
-    const pickMusic = this.game.add.audio('pick');
-    pickMusic.play();
-    this.spawnInterval = setInterval(this._spawn, SPAWN_INTERVAL);
+    this._spawning = true;
   }
 
   _stopSpawn() {
-    clearInterval(this.spawnInterval);
-    this.spawnInterval = null;
+    this._spawning = false;
   }
 
   _spawn = () => {
