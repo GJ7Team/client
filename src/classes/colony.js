@@ -12,7 +12,7 @@ import {
 } from '../constants';
 
 const INITIAL_NEUTRAL_POWER = 0;
-const ATTACK_MODIFICATOR = 0.65;
+export const ATTACK_MODIFICATOR = 0.65;
 const MIN_ATTACK_REQUIREMENT = 10;
 const SPAWN_INTERVAL = Math.round(1000 / GLOBAL_SPEED);
 const SPAWN_AMOUNT = 1;

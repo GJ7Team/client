@@ -8,7 +8,7 @@ const MATCH_SEARCH_SUCCESS = 'match/SEARCH_SUCCESS';
 const MATCH_FOUND = 'match/FOUND';
 
 const MATCH_ATTACK = 'match/ATTACK';
-const MATCH_ATTACK_ENEMY = 'match/ATTACK_ENEMY';
+const MATCH_ENEMY_ATTACK = 'match/ENEMY_ATTACK';
 const MATCH_CAST = 'match/CAST';
 const MATCH_TICK = 'match/TICK';
 
@@ -77,15 +77,22 @@ export const attack = ({
   });
 };
 
-export const subscribeAttack = res => {
+export const subscribeAttack = dispatch => res => {
   if (!matchEmmiter) {
     throw new Error('matchEmmiter is not defined');
   }
 
-  matchSocket.on(MATCH_ATTACK, res);
+  matchSocket.on(MATCH_ATTACK, data => {
+    dispatch({
+      type: MATCH_ENEMY_ATTACK,
+      payload: data,
+    });
+
+    res(data);
+  });
 };
 
-export const subscribeMatchDisconnect = res => {
+export const subscribeMatchDisconnect = dispatch => res => {
   if (!matchEmmiter) {
     throw new Error('matchEmmiter is not defined');
   }
@@ -93,7 +100,7 @@ export const subscribeMatchDisconnect = res => {
   matchSocket.on('disconnect', res);
 };
 
-export const subscribeMatchTick = res => {
+export const subscribeMatchTick = dispatch => res => {
   if (!matchEmmiter) {
     throw new Error('matchEmmiter is not defined');
   }
@@ -140,7 +147,17 @@ export default (state = initialState, { type, payload }) => {
         },
       };
 
-    case MATCH_ATTACK_ENEMY:
+    case MATCH_ENEMY_ATTACK:
+      return {
+        ...state,
+        history: [
+          ...state.history,
+          {
+            type: 'enemy-attack',
+            value: payload,
+          },
+        ],
+      };
     case MATCH_ATTACK:
       return {
         ...state,

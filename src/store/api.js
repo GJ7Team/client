@@ -31,6 +31,7 @@ export const createEmmiter = socket => {
             ...data,
           };
 
+      console.log('socket.emit', event);
       socket.emit(event, sendData, response => resolve(response));
     });
 };

@@ -44,13 +44,13 @@ export const actions = {
     return store.dispatch(attack(...args));
   },
   subscribeAttack(res) {
-    subscribeAttack(res);
+    subscribeAttack(store.dispatch)(res);
   },
   subscribeMatchDisconnect(res) {
-    subscribeMatchDisconnect(res);
+    subscribeMatchDisconnect(store.dispatch)(res);
   },
   subscribeMatchTick(res) {
-    subscribeMatchTick(res);
+    subscribeMatchTick(store.dispatch)(res);
   },
   cast: (...args) => {
     return store.dispatch(cast(...args));

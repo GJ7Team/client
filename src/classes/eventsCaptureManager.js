@@ -49,8 +49,11 @@ export default class EventsCaptureManager {
       setTimeout(superAI, interval);
     };
 
-    actions.subscribeMatchTick(() => {
-      console.log('tick');
+    actions.subscribeMatchTick(({ leftCollony, rightCollony }) => {
+      this.serverTick({
+        leftCollony,
+        rightCollony,
+      });
     });
 
     actions.subscribeMatchDisconnect(() => {
@@ -75,10 +78,10 @@ export default class EventsCaptureManager {
       });
     });
     // superAI();
-    setInterval(() => {
-      // TODO fake server tick
-      this.serverTick();
-    }, 1000);
+    // setInterval(() => {
+    //   // TODO fake server tick
+    //   this.serverTick();
+    // }, 1000);
   }
 
   serverTick() {
@@ -155,7 +158,7 @@ export default class EventsCaptureManager {
         attackPower,
       });
 
-      sourceColony._attack(targetColon, {
+      sourceColony._attack(targetColony, {
         attackPower,
       });
     } else {
