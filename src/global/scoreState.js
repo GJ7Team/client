@@ -1,4 +1,5 @@
 import values from 'lodash/values';
+import take from 'lodash/take';
 import { actions } from '../store';
 import { STATES, COLORS } from '../constants';
 import { addGradientText } from 'util/text';
@@ -22,7 +23,12 @@ export default {
   create: function() {
     const background = this.game.add.sprite(0, 0, 'background');
 
-    // addGradientText(this.game, { text: 'Scoreboard?' });
+    addGradientText(this.game, {
+      text: 'Scoreboard - top 10',
+      y: 30,
+      fontSize: 40,
+      colorStops: [COLORS.darkred, COLORS.white],
+    });
 
     this.game.input.activePointer.capture = true;
 
@@ -36,7 +42,6 @@ export default {
       1,
       0
     );
-
     backButton.scale.setTo(0.3, 0.3);
 
     this._loadRatings();
@@ -44,31 +49,33 @@ export default {
 
   _loadRatings() {
     const style = {
-      font: '16px Courier',
-      fill: COLORS.black,
+      font: '16px Courier bold',
+      fill: COLORS.darkred,
       tabs: [200, 200],
     };
     const ratings = this._getRatings();
     const headings = ['Name', 'Score'];
+    const textX = this.game.world.centerX;
+    const textY = 70;
+    const headingsHeight = 50;
 
     if (!ratings.length) {
       return false;
     }
 
-    this.headingsText = this.game.add.text(
-      32,
-      64,
-      '',
-      Object.assign({}, style, {
-        font: '20px Curier',
-      })
-    );
+    this.headingsText = this.game.add.text(textX, textY, '', {
+      ...style,
+      font: '20px Curier',
+    });
     this.headingsText.parseList(headings);
+    this.headingsText.anchor.set(0.5, 0, 5);
 
-    this.scoresText = this.game.add.text(32, 120, '', style);
+    this.scoresText = this.game.add.text(textX, textY + headingsHeight, '', {
+      ...style,
+      fill: COLORS.darkorchid,
+    });
     this.scoresText.parseList(ratings);
-
-    // window.s = this.scoresText;
+    this.scoresText.anchor.set(0.5, 0, 5);
   },
 
   _getRatings() {
@@ -160,7 +167,7 @@ export default {
     ];
     const processed = RATINGS.map(entry => values(entry));
 
-    return processed;
+    return take(processed, 10);
   },
 
   update: function() {
