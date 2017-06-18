@@ -49,12 +49,12 @@ export default class EventsCaptureManager {
       setTimeout(superAI, interval);
     };
 
-    actions.subscribeMatchTick(({ leftCollony, rightCollony }) => {
-      this.serverTick({
-        leftCollony,
-        rightCollony,
-      });
-    });
+    // actions.subscribeMatchTick(({ leftCollony, rightCollony }) => {
+    //   this.serverTick({
+    //     leftCollony,
+    //     rightCollony,
+    //   });
+    // });
 
     actions.subscribeMatchDisconnect(() => {
       console.error('PLAYER LEFT. TODO YOU WIN');
@@ -78,10 +78,10 @@ export default class EventsCaptureManager {
       });
     });
     // superAI();
-    // setInterval(() => {
-    //   // TODO fake server tick
-    //   this.serverTick();
-    // }, 1000);
+    setInterval(() => {
+      // TODO fake server tick
+      this.serverTick();
+    }, 1000);
   }
 
   serverTick(options) {
