@@ -13,7 +13,8 @@ const MATCH_CAST = 'match/CAST';
 const initialState = {
   isSearching: false,
   enemy: null,
-  match: null,
+  map: null,
+  details: null,
   history: [],
   game: {},
 };
@@ -89,14 +90,14 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         enemy: payload.enemy,
-        match: payload.match,
+        map: payload.map,
         isSearching: false,
       };
 
     case MATCH_ENTER:
       return {
         ...state,
-        match: {
+        details: {
           ...state.match,
           ...payload,
         },

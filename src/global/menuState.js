@@ -1,4 +1,9 @@
+import { actions } from '../store';
 import { STATES } from '../constants';
+
+function goToSeachMatch() {
+  this.game.state.start(STATES.SEARCH_MATCH);
+}
 
 function goToPlayState() {
   this.game.state.start(STATES.PLAY);
@@ -35,7 +40,7 @@ export default {
       game.world.centerX,
       game.world.centerY * 0.5,
       'button',
-      goToPlayState.bind(this),
+      goToSeachMatch.bind(this),
       this,
       2,
       1,

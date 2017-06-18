@@ -19,8 +19,6 @@ const BG_SET = ['bg-bacteria.frag', 'bg-microflora.frag'];
 
 export default {
   preload: function() {
-    actions.matchFind();
-
     this.button = this.game.load.spritesheet(
       'back',
       'assets/buttons/button_sprite_sheet.png',

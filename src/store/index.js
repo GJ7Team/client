@@ -17,14 +17,20 @@ let storeCreator = applyMiddleware.apply(null, middlewares);
 
 const store = storeCreator(createStore)(rootReducer);
 
-export default store;
+export default cb => {
+  return store.subscribe(cb);
+};
 
 export const actions = {
   gameEnter: (...args) => {
     return store.dispatch(gameEnter(...args));
   },
-  matchFind: (...args) => {
-    return store.dispatch(matchFind(...args));
+  matchFind: subscribe => {
+    store.subscribe(() => {
+      selectors.match();
+    });
+
+    return store.dispatch(matchFind());
   },
   attack: (...args) => {
     return store.dispatch(attack(...args));

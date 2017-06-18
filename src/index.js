@@ -4,7 +4,9 @@ import menuState from './global/menuState';
 import loginState from './global/loginState';
 import resultState from './global/resultState';
 import scoreState from './global/scoreState';
+import searchState from './global/searchState';
 import PhaserInput from 'lib/PhaserInput';
+import { STATES } from './constants';
 
 import './store';
 
@@ -23,18 +25,18 @@ start(() => {
     'game'
   );
 
-  //   const scaleManager = new Phaser.ScaleManager(game, WORLD_SIZE.width, WORLD_SIZE.height);
-
-  //   console.warn('scaleManager', scaleManager);
-  //   scaleManager.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+  // const scaleManager = new Phaser.ScaleManager(game, WORLD_SIZE.width, WORLD_SIZE.height);
+  // console.warn('scaleManager', scaleManager);
+  // scaleManager.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 
   const pluginManager = new Phaser.PluginManager(game);
   pluginManager.add(PhaserInput.Plugin);
 
-  game.state.add('play', PlayState);
-  game.state.add('menuState', menuState);
-  game.state.add('loginState', loginState);
-  game.state.add('resultState', resultState);
-  game.state.add('scoreState', scoreState);
-  game.state.start('loginState');
+  game.state.add(STATES.PLAY, PlayState);
+  game.state.add(STATES.MENU, menuState);
+  game.state.add(STATES.LOGIN, loginState);
+  game.state.add(STATES.RESULT, resultState);
+  game.state.add(STATES.SCOREBOARD, scoreState);
+  game.state.add(STATES.SEARCH_MATCH, searchState);
+  game.state.start(STATES.LOGIN);
 });

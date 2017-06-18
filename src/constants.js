@@ -5,6 +5,7 @@ export const STATES = {
   LOGIN: 'loginState',
   RESULT: 'resultState',
   SCOREBOARD: 'scoreState',
+  SEARCH_MATCH: 'search_match',
 };
 
 export const COLONY_TYPES = {
