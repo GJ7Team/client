@@ -3,7 +3,7 @@ import PlayState from './global/playState';
 import menuState from './global/menuState';
 import loginState from './global/loginState';
 import resultState from './global/resultState';
-import scoreboardState from './global/scoreboardState';
+import scoreState from './global/scoreState';
 import PhaserInput from 'lib/PhaserInput';
 
 import './store';
@@ -35,6 +35,6 @@ start(() => {
   game.state.add('menuState', menuState);
   game.state.add('loginState', loginState);
   game.state.add('resultState', resultState);
-  game.state.add('scoreboardState', scoreboardState);
+  game.state.add('scoreState', scoreState);
   game.state.start('loginState');
 });
