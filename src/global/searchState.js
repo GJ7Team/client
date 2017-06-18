@@ -8,10 +8,11 @@ export default {
     this.game.load.image('background', 'assets/images/background.png');
 
     actions.matchFind();
-    const off = subscribe(() => {
-      const { isSearching } = selectors.match();
 
-      if (!isSearching) {
+    const off = subscribe(() => {
+      const { isSearching, map } = selectors.match();
+
+      if (!isSearching && map) {
         off();
         this.game.state.start(STATES.PLAY);
       }
