@@ -1,4 +1,6 @@
+import { addGradientText } from 'util/text';
 import {
+  COLORS,
   GLOBAL_SPEED,
   COLONY_TYPES,
   BACTERIA_TYPES,
@@ -175,16 +177,15 @@ export default class Colony extends Phaser.Sprite {
   }
 
   _createCounter() {
-    const style = {
-      font: '14px Arial',
-      fill: '#000',
-      wordWrap: true,
-      wordWrapWidth: this.width,
-      align: 'center',
-    };
-
-    this.text = this.game.add.text(0, 0, this.power, style);
-    this.text.anchor.set(0.5);
+    this.text = addGradientText(this.game, {
+      text: this.power,
+      y: 0,
+      x: 0,
+      fontSize: 18,
+      colorStops: [COLORS.white, COLORS.white],
+    });
+    this.text.wordWrap = true;
+    this.text.wordWrapWidth = this.width;
   }
 
   _startSpawn() {

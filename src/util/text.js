@@ -1,3 +1,5 @@
+import { COLORS } from '../constants';
+
 export function addGradientText(game, options = {}) {
   const normalized = {
     text: 'Lorem ipsum',
@@ -12,7 +14,7 @@ export function addGradientText(game, options = {}) {
   console.warn('game', game);
   const gameText = game.add.text(normalized.x, normalized.y, normalized.text);
   //  Centers the text
-  gameText.anchor.set(0.5);
+  gameText.anchor.set(0.5, 0.5);
   gameText.align = 'center';
 
   //  Our font + size
@@ -24,14 +26,12 @@ export function addGradientText(game, options = {}) {
   //  Add in 2 color stops
   normalized.colorStops.forEach((color, i) => grd.addColorStop(i, color));
   gameText.fill = grd;
+
+  return gameText;
 }
 
 export function addMyNameText(game, options) {
-  const gameText = game.add.text(
-    120,
-    20,
-    options.text
-  );
+  const gameText = game.add.text(120, 20, options.text);
   //  Centers the text
   gameText.anchor.set(0.5);
   gameText.align = 'center';
@@ -43,17 +43,13 @@ export function addMyNameText(game, options) {
   var grd = gameText.context.createLinearGradient(0, 0, 0, gameText.height);
 
   //  Add in 2 color stops
-  grd.addColorStop(0, '#8ED6FF');
-  grd.addColorStop(1, '#004CB3');
+  grd.addColorStop(0, COLORS.lime);
+  grd.addColorStop(1, COLORS.darkgreen);
   gameText.fill = grd;
 }
 
 export function addEnemyNameText(game, options) {
-  const gameText = game.add.text(
-    game.world.width - 120,
-    20,
-    options.text
-  );
+  const gameText = game.add.text(game.world.width - 120, 20, options.text);
   //  Centers the text
   gameText.anchor.set(0.5);
   gameText.align = 'center';
@@ -65,8 +61,7 @@ export function addEnemyNameText(game, options) {
   var grd = gameText.context.createLinearGradient(0, 0, 0, gameText.height);
 
   //  Add in 2 color stops
-  grd.addColorStop(0, '#D90000');
-  grd.addColorStop(1, '#B20000');
+  grd.addColorStop(0, COLORS.red);
+  grd.addColorStop(1, COLORS.darkred);
   gameText.fill = grd;
 }
-
