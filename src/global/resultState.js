@@ -13,7 +13,6 @@ export default {
   },
 
   create: function() {
-
     this.game.stage.disableVisibilityChange = true;
     initScaling(this.game).create();
     const background = this.game.add.sprite(0, 0, 'background');
@@ -56,7 +55,7 @@ export default {
     const scoresTextMe = this.game.add.text(textX, textY + headingsHeight, '', {
       ...style,
       fill: COLORS.lime,
-      font: '20px Curier bold',
+      font: '30px Curier',
     });
     scoresTextMe.parseList(values(me));
     scoresTextMe.anchor.set(0.5, 0, 5);
@@ -71,7 +70,7 @@ export default {
     });
     const headingsTextEnemy = this.game.add.text(textX, textY + 120, '', {
       ...style,
-      font: '30px Curier',
+      font: '20px Curier',
       fill: COLORS.red,
     });
     headingsTextEnemy.parseList(headings);
