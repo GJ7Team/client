@@ -63,7 +63,7 @@ export default class EventsCaptureManager {
         hasSelf = true;
       }
     });
-    console.warn('checkWinState', hasEnemy);
+
     if (!hasEnemy) {
       // TODO CHECK enemy colonies in progress
       console.error('TODO SERVER - WIN STATE');

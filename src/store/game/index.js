@@ -25,6 +25,8 @@ export const gameEnter = ({ name }) => async dispatch => {
   });
 };
 
+export const myNameSelector = (state) => state.game.player.name;
+
 export default (state = initialState, { type, payload }) => {
   switch (type) {
     case GAME_ENTER:

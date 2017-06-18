@@ -3,7 +3,7 @@ import { compose, createStore, combineReducers, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import loggerMiddleware from 'redux-logger';
 
-import gameReducer, { gameSelector, gameEnter } from './game';
+import gameReducer, { gameSelector, gameEnter, myNameSelector } from './game';
 import matchReducer, { matchSelector, matchFind, attack, cast } from './match';
 
 const rootReducer = combineReducers({
@@ -46,5 +46,8 @@ export const selectors = {
   },
   match() {
     return matchSelector(store.getState());
+  },
+  getMyName() {
+    return myNameSelector(store.getState());
   },
 };

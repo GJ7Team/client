@@ -1,5 +1,6 @@
 import { actions, selectors } from '../store';
 import Colony from 'classes/colony';
+import { addMyNameText, addEnemyNameText } from 'util/text'
 import EventsCaptureManager from 'classes/eventsCaptureManager';
 import { STATES, WORLD_SIZE, ATTACK_DIRECTION_COLOR } from '../constants';
 
@@ -100,6 +101,11 @@ export default {
     );
 
     backButton.scale.setTo(0.3, 0.3);
+
+    // My name & enemy name
+    const myName = selectors.getMyName();
+    addMyNameText(this.game, { text: myName });
+    addEnemyNameText(this.game, { text: myName });
 
     this._initUserInteractions();
   },
