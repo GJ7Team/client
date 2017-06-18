@@ -1,5 +1,7 @@
 import gameState from 'services/gameState';
 import { addGradientText } from 'util/text';
+let bacteriaId = 0;
+let bactesColided = [];
 import {
   COLORS,
   GLOBAL_SPEED,
@@ -21,6 +23,12 @@ const RADIUS_DELTA = 10;
 const ANIMATION_REMOVAL_DELAY = 200;
 
 function enemyCollisionHandler(colony, bacteria) {
+  const colided = bactesColided.indexOf(bacteria._id) !== -1;
+  if (colided) {
+    console.warn('SUPER FIX');
+    return;
+  }
+  bactesColided.push(bacteria._id);
   console.info('[bacterium] enmy colision', bacteria._power);
   const power = bacteria._power || 1;
 
@@ -51,6 +59,12 @@ function enemyCollisionHandler(colony, bacteria) {
 }
 
 function collisionHandler(colony, bacteria) {
+  const colided = bactesColided.indexOf(bacteria._id) !== -1;
+  if (colided) {
+    console.warn('SUPER FIX');
+    return;
+  }
+  bactesColided.push(bacteria._id);
   console.info('[bacterium] colision', bacteria._power);
   const kickMusic = this.game.add.audio('kick');
   const power = bacteria._power || 1;
@@ -96,6 +110,8 @@ function createBacteria(x, y, game, bacteries, target, isAlly) {
   bacteria.body.velocity.setTo(Xvector, Yvector);
 
   bacteria.scale.setTo(0.2, 0.2);
+  bacteria._id = bacteriaId;
+  bacteriaId++;
 }
 
 function createSuperBacteria(x, y, game, bacteries, target, isAlly, power) {
@@ -116,6 +132,8 @@ function createSuperBacteria(x, y, game, bacteries, target, isAlly, power) {
 
   bacteria.scale.setTo(0.8, 0.8);
   bacteria._power = power;
+  bacteria._id = bacteriaId;
+  bacteriaId++;
 }
 
 export default class Colony extends Phaser.Sprite {
