@@ -47,6 +47,8 @@ export default {
 
     // music
     this.game.load.audio('game', ['assets/audio/game.mp3']);
+    this.game.load.audio('pick', ['assets/audio/pick.mp3']);
+    this.game.load.audio('kick', ['assets/audio/kick.mp3']);
 
     this.bacteria = this.game.load.spritesheet(
       'bacteria',
@@ -81,8 +83,9 @@ export default {
     this.bitmapData.ctx.stroke();
     this.game.add.sprite(0, 0, this.bitmapData);
 
-    var music = this.game.add.audio('game');
-    // music.play();
+    var gameMusic = this.game.add.audio('game');
+
+    gameMusic.play();
 
     const match = selectors.match();
 

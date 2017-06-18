@@ -45,7 +45,7 @@ function enemyCollisionHandler(colony, bacteria) {
 
 function collisionHandler(colony, bacteria) {
   console.info('[bacterium] colision');
-
+  const kickMusic = this.game.add.audio('kick');
   switch (colony.type) {
     case COLONY_TYPES.ally:
       colony._changePower(1);
@@ -55,6 +55,7 @@ function collisionHandler(colony, bacteria) {
       colony._changeType(COLONY_TYPES.ally);
       break;
     case COLONY_TYPES.enemy:
+      kickMusic.play();
       colony._changePower(-1);
       if (colony.power === 0) {
         colony._changeType(COLONY_TYPES.neutral);
@@ -182,6 +183,8 @@ export default class Colony extends Phaser.Sprite {
   }
 
   _startSpawn() {
+    const pickMusic = this.game.add.audio('pick');
+    pickMusic.play();
     this.spawnInterval = setInterval(this._spawn, SPAWN_INTERVAL);
   }
 
