@@ -14,9 +14,10 @@ export default {
   preload: function() {
     const game = this.game;
     this.game.load.image('background', 'assets/images/background.png');
+    this.game.load.image('nick_input', 'assets/buttons/nick_input.png');
     this.button = game.load.spritesheet(
       'button',
-      'assets/buttons/button_sprite_sheet.png',
+      'assets/buttons/login.png',
       193,
       71
     );
@@ -36,10 +37,15 @@ export default {
     initScaling(this.game).create();
 
     const background = game.add.sprite(0, 0, 'background');
+    const inputBack = game.add.sprite(
+      game.world.centerX - 165,
+      game.world.centerY - 69,
+      'nick_input'
+    );
     background.name = 'background';
     const button1 = game.add.button(
       game.world.centerX,
-      game.world.centerY * 0.5,
+      game.world.centerY + 60,
       'button',
       login.bind(this),
       this,
@@ -52,13 +58,13 @@ export default {
     button1.scale.setTo(1.5, 1.5);
 
     this.input = game.add.inputField(
-      game.world.centerX - 75,
-      game.world.centerY,
+      game.world.centerX - 150,
+      game.world.centerY - 55,
       {
         font: '18px Arial',
         fill: '#212121',
         fontWeight: 'bold',
-        width: 150,
+        width: 290,
         padding: 8,
         borderWidth: 1,
         borderColor: '#000',
