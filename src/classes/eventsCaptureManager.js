@@ -49,6 +49,10 @@ export default class EventsCaptureManager {
       setTimeout(superAI, interval);
     };
 
+    actions.subscribeMatchTick(() => {
+      console.log('tick');
+    });
+
     actions.subscribeMatchDisconnect(() => {
       console.error('PLAYER LEFT. TODO YOU WIN');
     });

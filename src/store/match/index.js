@@ -10,6 +10,7 @@ const MATCH_FOUND = 'match/FOUND';
 const MATCH_ATTACK = 'match/ATTACK';
 const MATCH_ATTACK_ENEMY = 'match/ATTACK_ENEMY';
 const MATCH_CAST = 'match/CAST';
+const MATCH_TICK = 'match/TICK';
 
 const initialState = {
   isSearching: false,
@@ -90,6 +91,14 @@ export const subscribeMatchDisconnect = res => {
   }
 
   matchSocket.on('disconnect', res);
+};
+
+export const subscribeMatchTick = res => {
+  if (!matchEmmiter) {
+    throw new Error('matchEmmiter is not defined');
+  }
+
+  matchSocket.on(MATCH_TICK, res);
 };
 
 export const cast = ({ point, x, y, coords, spell }) => async dispatch => {
