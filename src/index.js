@@ -35,4 +35,5 @@ start(() => {
   game.state.add(STATES.SCOREBOARD, scoreState);
   game.state.add(STATES.SEARCH_MATCH, searchState);
   game.state.start(STATES.LOGIN);
+  // game.state.start(STATES.RESULT);
 });

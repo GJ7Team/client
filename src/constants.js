@@ -186,3 +186,5 @@ export const COLORS = {
 };
 
 export const ATTACK_DIRECTION_COLOR = COLORS.mediumseagreen;
+
+export const INITIAL_ACTIVE_POWER = 10;

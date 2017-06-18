@@ -1,3 +1,4 @@
+import gameState from 'services/gameState';
 import { addGradientText } from 'util/text';
 import {
   COLORS,
@@ -7,9 +8,9 @@ import {
   COLONY_TYPE_TO_IMAGE,
   BACTERIA_TYPE_TO_IMAGE,
   ATTACK_DIRECTION_COLOR,
+  INITIAL_ACTIVE_POWER,
 } from '../constants';
 
-const INITIAL_ACTIVE_POWER = 10;
 const INITIAL_NEUTRAL_POWER = 0;
 const ATTACK_MODIFICATOR = 0.65;
 const MIN_ATTACK_REQUIREMENT = 10;
@@ -226,6 +227,17 @@ export default class Colony extends Phaser.Sprite {
 
   _spawn = () => {
     this._changePower(SPAWN_AMOUNT);
+
+    //  send to state amount of updated power
+    if (this._isAlly()) {
+      gameState.setMyStatistics({
+        spawned: SPAWN_AMOUNT,
+      });
+    } else {
+      gameState.setEnemyStatistics({
+        spawned: SPAWN_AMOUNT,
+      });
+    }
   };
 
   _hasSpawn = () => {
@@ -244,25 +256,21 @@ export default class Colony extends Phaser.Sprite {
     const attacked = this._changePower(-attackPower);
     console.log(`attacked with [${attacked}] bacteria`);
 
-    if (this._isAlly()) {
-      this._stopShowingAttackDirection(target);
-    }
-
     const bacteries = this.game.add.group();
     bacteries.enableBody = true;
 
     let speed = 60;
     if (attackPower > 50) {
-        createSuperBacteria(
-          this.x,
-          this.y,
-          this.game,
-          bacteries,
-          target,
-          this._isAlly(),
-          attackPower
-        );
-        speed = 150;
+      createSuperBacteria(
+        this.x,
+        this.y,
+        this.game,
+        bacteries,
+        target,
+        this._isAlly(),
+        attackPower
+      );
+      speed = 150;
     } else {
       for (let i = 0; i < attackPower; i++) {
         createBacteria(
@@ -274,6 +282,18 @@ export default class Colony extends Phaser.Sprite {
           this._isAlly()
         );
       }
+    }
+
+    if (this._isAlly()) {
+      this._stopShowingAttackDirection(target);
+
+      gameState.setMyStatistics({
+        attacked: attackPower,
+      });
+    } else {
+      gameState.setEnemyStatistics({
+        attacked: attackPower,
+      });
     }
 
     setTimeout(() => {
