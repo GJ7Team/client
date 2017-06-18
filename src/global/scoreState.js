@@ -85,88 +85,60 @@ export default {
   _getRatings() {
     const RATINGS = [
       {
-        name: 'Adolf',
+        name: 'Витя',
         score: 100500,
       },
       {
-        name: 'Кернос',
+        name: 'Семен',
         score: 100000,
       },
       {
-        name: 'Гамаз',
+        name: 'Евген',
         score: 500,
       },
       {
-        name: 'Adolf',
+        name: 'Валерий С.',
         score: 100500,
       },
       {
-        name: 'Кернос',
+        name: 'Наташа',
         score: 100000,
       },
       {
-        name: 'Гамаз',
+        name: 'Борик',
         score: 500,
       },
       {
-        name: 'Adolf',
+        name: 'Степашка',
         score: 100500,
       },
       {
-        name: 'Кернос',
-        score: 100000,
-      },
-      {
-        name: 'Гамаз',
-        score: 500,
-      },
-      {
-        name: 'Adolf',
+        name: 'Витя',
         score: 100500,
       },
       {
-        name: 'Кернос',
+        name: 'Семен',
         score: 100000,
       },
       {
-        name: 'Гамаз',
+        name: 'Евген',
         score: 500,
       },
       {
-        name: 'Adolf',
+        name: 'Валерий С.',
         score: 100500,
       },
       {
-        name: 'Кернос',
+        name: 'Наташа',
         score: 100000,
       },
       {
-        name: 'Гамаз',
+        name: 'Борик',
         score: 500,
       },
       {
-        name: 'Adolf',
+        name: 'Степашка',
         score: 100500,
-      },
-      {
-        name: 'Кернос',
-        score: 100000,
-      },
-      {
-        name: 'Гамаз',
-        score: 500,
-      },
-      {
-        name: 'Adolf',
-        score: 100500,
-      },
-      {
-        name: 'Кернос',
-        score: 100000,
-      },
-      {
-        name: 'Гамаз',
-        score: 500,
       },
     ];
     const processed = RATINGS.map(entry => values(entry));
