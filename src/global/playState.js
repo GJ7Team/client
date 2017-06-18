@@ -1,6 +1,6 @@
 import { actions, selectors } from '../store';
 import Colony from 'classes/colony';
-import { addMyNameText, addEnemyNameText } from 'util/text'
+import { addMyNameText, addEnemyNameText } from 'util/text';
 import EventsCaptureManager from 'classes/eventsCaptureManager';
 import { STATES, WORLD_SIZE, ATTACK_DIRECTION_COLOR } from '../constants';
 import initScaling from 'util/initScaling';
@@ -42,9 +42,18 @@ export default {
     this.game.load.json('level:1', 'data/level00.json');
 
     // colonies
-    this.game.load.image('colony:neutral', 'assets/images/colony_neutral.png');
-    this.game.load.image('colony:enemy', 'assets/images/colony_enemy.png');
-    this.game.load.image('colony:ally', 'assets/images/colony_ally.png');
+    this.game.load.image(
+      'colony:neutral',
+      'assets/images/colony_color/colony_yellow.png'
+    );
+    this.game.load.image(
+      'colony:enemy',
+      'assets/images/colony_color/colony_red.png'
+    );
+    this.game.load.image(
+      'colony:ally',
+      'assets/images/colony_color/colony_green.png'
+    );
 
     // music
     this.game.load.audio('game', ['assets/audio/game.mp3']);
@@ -148,6 +157,7 @@ export default {
 
     this.game.physics.arcade.enable(sprite);
     sprite.anchor.setTo(0, 0);
+    // sprite.scale.setTo(0.5, 0,5);
     sprite.body.immovable = true;
     this.colonies.add(sprite);
   },
