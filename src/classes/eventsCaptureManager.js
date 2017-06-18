@@ -1,3 +1,4 @@
+import throttle from 'lodash/throttle';
 import { COLONY_TYPES, STATES } from '../constants';
 import { ATTACK_MODIFICATOR } from './colony';
 import { actions } from '../store';
@@ -60,7 +61,8 @@ export default class EventsCaptureManager {
       console.error('PLAYER LEFT. TODO YOU WIN');
     });
 
-    actions.subscribeAttack(({ fromColonyId, toColonyId, attackPower }) => {
+    
+    const throttled = throttle(({ fromColonyId, toColonyId, attackPower }) => {
       let fromColony = null;
       let toColony = null;
 
@@ -76,7 +78,9 @@ export default class EventsCaptureManager {
       fromColony._enemyAttack(toColony, {
         attackPower,
       });
-    });
+    }, 100, { 'trailing': true });
+
+    actions.subscribeAttack(throttled);
     // superAI();
     setInterval(() => {
       // TODO fake server tick
