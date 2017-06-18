@@ -12,6 +12,8 @@ import matchReducer, {
   subscribeMatchDisconnect,
   subscribeMatchTick,
   cast,
+  win,
+  lost,
 } from './match';
 
 const rootReducer = combineReducers({
@@ -54,6 +56,12 @@ export const actions = {
   },
   cast: (...args) => {
     return store.dispatch(cast(...args));
+  },
+  win: (...args) => {
+    return store.dispatch(win(...args));
+  },
+  lost: (...args) => {
+    return store.dispatch(lost(...args));
   },
 };
 

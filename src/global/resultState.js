@@ -1,4 +1,5 @@
 import values from 'lodash/valuesIn';
+import { actions } from '../store';
 import { STATES, COLORS } from '../constants';
 import { addGradientText } from 'util/text';
 import gameState from 'services/gameState';
@@ -19,6 +20,12 @@ export default {
     const resultData = gameState.getResult();
 
     const resultText = resultData.win ? 'You won!' : 'You lost!';
+    if (resultData.win) {
+      actions.win();
+    } else {
+      actions.lost();
+    }
+
     addGradientText(this.game, {
       text: resultText,
       y: 40,

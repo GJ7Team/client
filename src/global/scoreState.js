@@ -1,6 +1,6 @@
 import values from 'lodash/values';
 import take from 'lodash/take';
-import { actions } from '../store';
+import { actions, selectors } from '../store';
 import { STATES, COLORS } from '../constants';
 import { addGradientText } from 'util/text';
 import initScaling from 'util/initScaling';
@@ -22,6 +22,9 @@ export default {
   },
 
   create: function() {
+    const game = selectors.game();
+    console.log(game);
+
     initScaling(this.game).create();
 
     this.game.stage.disableVisibilityChange = true;

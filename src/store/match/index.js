@@ -11,6 +11,8 @@ const MATCH_ATTACK = 'match/ATTACK';
 const MATCH_ENEMY_ATTACK = 'match/ENEMY_ATTACK';
 const MATCH_CAST = 'match/CAST';
 const MATCH_TICK = 'match/TICK';
+const MATCH_LOST = 'match/LOST';
+const MATCH_WIN = 'match/WIN';
 
 const initialState = {
   isSearching: false,
@@ -118,6 +120,32 @@ export const cast = ({ point, x, y, coords, spell }) => async dispatch => {
   dispatch({
     type: MATCH_CAST,
     payload: cast,
+  });
+};
+
+export const win = () => async dispatch => {
+  if (!matchEmmiter) {
+    throw new Error('matchEmmiter is not defined');
+  }
+
+  matchEmmiter(MATCH_WIN);
+
+  dispatch({
+    type: MATCH_WIN,
+    payload: {},
+  });
+};
+
+export const lost = () => async dispatch => {
+  if (!matchEmmiter) {
+    throw new Error('matchEmmiter is not defined');
+  }
+
+  matchEmmiter(MATCH_LOST);
+
+  dispatch({
+    type: MATCH_LOST,
+    payload: {},
   });
 };
 
