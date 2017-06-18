@@ -1,8 +1,18 @@
 import { actions } from '../store';
-import { STATES } from '../constants';
+import { STATES, COLORS } from '../constants';
+import { addGradientText } from '../util/text';
 import initScaling from 'util/initScaling';
 
+const ERROR_TEXT = 'Please enter your nickname';
+
 const login = async function() {
+  const value = this.input.value.replace(/ /g, '');
+
+  if (!value) {
+    this.errorText.setText(ERROR_TEXT);
+    return false;
+  }
+
   actions.gameEnter({
     name: this.input.value,
   });
@@ -47,7 +57,7 @@ export default {
     background.name = 'background';
     const button1 = game.add.button(
       game.world.centerX,
-      game.world.centerY + 60,
+      game.world.centerY + 80,
       'button',
       login.bind(this),
       this,
@@ -78,5 +88,12 @@ export default {
     );
     this.input.blockInput = false;
     this.input.startFocus();
+
+    this.errorText = addGradientText(this.game, {
+      text: '',
+      y: 220,
+      fontSize: 30,
+      colorStops: [COLORS.red, COLORS.white],
+    });
   },
 };
