@@ -19,7 +19,7 @@ const initialState = {
 };
 
 let matchEmmiter = null;
-let matchSoket = null;
+let matchSocket = null;
 
 export const matchSelector = state => state.match;
 
@@ -31,27 +31,24 @@ export const matchFind = () => async dispatch => {
 
   const match = await emit(MATCH_SEARCH_START);
 
+  console.log(match);
   dispatch({
     type: MATCH_SEARCH_SUCCESS,
     payload: match,
   });
 
-  matchSoket = getMatchSocket(match.matchId);
+  console.log('connect to room ' + match.matchId);
+  matchSocket = getMatchSocket(match.matchId);
   matchEmmiter = createEmmiter(matchSocket);
 
-  const matchEnvironment = await matchEmmiter(MATCH_ENTER);
+  const matchDetails = await matchEmmiter(MATCH_ENTER);
 
   dispatch({
     type: MATCH_ENTER,
     payload: matchDetails,
   });
 
-  dispatch({
-    type: 'match/ENVIRONMENT',
-    payload: matchEnvironment,
-  });
-
-  const matchActions = (await matchFinder.next()).value;
+  // const matchActions = (await matchFinder.next()).value;
 };
 
 export const attack = ({ point, value }) => async dispatch => {
@@ -87,6 +84,7 @@ export default (state = initialState, { type, payload }) => {
         ...state,
         isSearching: true,
       };
+
     case MATCH_SEARCH_SUCCESS:
       return {
         ...state,
@@ -94,12 +92,16 @@ export default (state = initialState, { type, payload }) => {
         match: payload.match,
         isSearching: false,
       };
+
     case MATCH_ENTER:
       return {
         ...state,
+        match: {
+          ...state.match,
+          ...payload,
+        },
       };
-    case 'match/ENVIRONMENT':
-      return {};
+
     case MATCH_ATTACK:
       return {
         ...state,

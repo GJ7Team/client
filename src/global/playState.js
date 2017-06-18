@@ -1,3 +1,4 @@
+import { actions, selectors } from '../store';
 import Colony from 'classes/colony';
 import EventsCaptureManager from 'classes/eventsCaptureManager';
 import { STATES, WORLD_SIZE, ATTACK_DIRECTION_COLOR } from '../constants';
@@ -18,6 +19,8 @@ const BG_SET = ['bg-bacteria.frag', 'bg-microflora.frag', 'bg-blue-dots.frag'];
 
 export default {
   preload: function() {
+    actions.matchFind();
+
     this.button = this.game.load.spritesheet(
       'back',
       'assets/buttons/button_sprite_sheet.png',
@@ -82,7 +85,9 @@ export default {
     var music = this.game.add.audio('game');
     // music.play();
 
-    this._loadLevel(this.game.cache.getJSON('level:1'));
+    const match = selectors.match();
+    this._loadLevel(match.match.map);
+    // this._loadLevel(this.game.cache.getJSON('level:1'));
 
     const backButton = this.game.add.button(
       10,
