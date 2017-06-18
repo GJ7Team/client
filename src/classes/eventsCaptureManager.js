@@ -1,6 +1,8 @@
 import { COLONY_TYPES, STATES } from '../constants';
+import gameState from 'services/gameState';
 
-function goToResultState(game) {
+function goToResultState(game, resultData) {
+  gameState.setResult(resultData)
   game.state.start(STATES.RESULT);
 }
 
@@ -65,14 +67,18 @@ export default class EventsCaptureManager {
     if (!hasEnemy) {
       // TODO CHECK enemy colonies in progress
       console.error('TODO SERVER - WIN STATE');
-      this.winTimeout = setTimeout(() => goToResultState(this.game), 4000);
+      this.winTimeout = setTimeout(() => goToResultState(this.game, {
+        win: true,
+      }), 4000);
     }
 
     if (!hasSelf) {
       // TODO CHECK enemy colonies in progress
       // LOSE
       console.error('TODO SERVER - LOOSE STATE');
-      this.winTimeout = setTimeout(() => goToResultState(this.game), 4000);
+      this.winTimeout = setTimeout(() => goToResultState(this.game, {
+        win: false,
+      }), 4000);
     }
   }
 

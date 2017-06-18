@@ -1,6 +1,7 @@
 import { actions } from '../store';
 import { STATES } from '../constants';
 import { addGradientText } from 'util/text';
+import gameState from 'services/gameState';
 
 export default {
   preload: function() {
@@ -15,8 +16,10 @@ export default {
 
   create: function() {
     const background = this.game.add.sprite(0, 0, 'background');
+    const resultData = gameState.getResult();
 
-    addGradientText(this.game, { text: 'Did you win?' });
+    const resultText = resultData.win ? 'You won!' : 'You lost!';
+    addGradientText(this.game, { text: resultText });
     this.game.input.activePointer.capture = true;
   },
 };
