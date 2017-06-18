@@ -13,11 +13,19 @@ export const COLONY_TYPES = {
   neutral: 'neutral',
   enemy: 'enemy',
 };
-
-export const TYPE_TO_IMAGE = {
+export const COLONY_TYPE_TO_IMAGE = {
   [COLONY_TYPES.ally]: 'colony:ally',
   [COLONY_TYPES.neutral]: 'colony:neutral',
   [COLONY_TYPES.enemy]: 'colony:enemy',
+};
+
+export const BACTERIA_TYPES = {
+  ally: 'ally',
+  enemy: 'enemy',
+};
+export const BACTERIA_TYPE_TO_IMAGE = {
+  [BACTERIA_TYPES.ally]: 'bacteria:ally',
+  [BACTERIA_TYPES.enemy]: 'bacteria:enemy',
 };
 
 export const GLOBAL_SPEED = 1;
@@ -177,4 +185,4 @@ export const COLORS = {
   yellow: '#ffff00',
 };
 
-export const ATTACK_DIRECTION_COLOR = COLORS.white;
+export const ATTACK_DIRECTION_COLOR = COLORS.mediumseagreen;
