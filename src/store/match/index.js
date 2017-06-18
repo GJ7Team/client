@@ -97,9 +97,8 @@ export default (state = initialState, { type, payload }) => {
     case MATCH_ENTER:
       return {
         ...state,
-        details: {
-          ...state.match,
-          ...payload,
+        map: {
+          ...payload.map,
         },
       };
 
