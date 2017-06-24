@@ -25,6 +25,13 @@ export default {
         true
       );
 
+    this.game.load.spritesheet(
+      'kaboom',
+      'assets/spizjenoe/explode.png',
+      128,
+      128
+    );
+
     this.game.load.image('background', 'assets/images/background.png');
     this.game.load.image('nick_input', 'assets/buttons/nick_input.png');
     this.game.load.spritesheet('button', 'assets/buttons/login.png', 193, 71);

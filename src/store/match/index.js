@@ -9,6 +9,7 @@ const MATCH_FOUND = 'match/FOUND';
 
 const MATCH_ATTACK = 'match/ATTACK';
 const MATCH_ENEMY_ATTACK = 'match/ENEMY_ATTACK';
+const MATCH_ENEMY_CAST = 'match/ENEMY_CAST';
 const MATCH_CAST = 'match/CAST';
 const MATCH_TICK = 'match/TICK';
 const MATCH_LOST = 'match/LOST';
@@ -79,6 +80,23 @@ export const attack = ({
   });
 };
 
+export const cast = ({ skillId, colonyId }) => async dispatch => {
+  if (!matchEmmiter) {
+    throw new Error('matchEmmiter is not defined');
+  }
+
+  // const attack = matchEmmiter(MATCH_ATTACK, { point, x, y, coords, spell });
+  const cast = matchEmmiter(MATCH_CAST, {
+    skillId,
+    colonyId,
+  });
+
+  dispatch({
+    type: MATCH_CAST,
+    payload: cast,
+  });
+};
+
 export const subscribeAttack = res => dispatch => {
   if (!matchEmmiter) {
     throw new Error('matchEmmiter is not defined');
@@ -87,6 +105,21 @@ export const subscribeAttack = res => dispatch => {
   matchSocket.on(MATCH_ATTACK, data => {
     dispatch({
       type: MATCH_ENEMY_ATTACK,
+      payload: data,
+    });
+
+    res(data);
+  });
+};
+
+export const subscribeSkill = res => dispatch => {
+  if (!matchEmmiter) {
+    throw new Error('matchEmmiter is not defined');
+  }
+
+  matchSocket.on(MATCH_CAST, data => {
+    dispatch({
+      type: MATCH_ENEMY_CAST,
       payload: data,
     });
 
@@ -108,19 +141,6 @@ export const subscribeMatchTick = res => dispatch => {
   }
 
   matchSocket.on(MATCH_TICK, res);
-};
-
-export const cast = ({ point, x, y, coords, spell }) => async dispatch => {
-  if (!matchEmmiter) {
-    throw new Error('matchEmmiter is not defined');
-  }
-
-  const cast = matchEmmiter(MATCH_CAST, { point, x, y, coords, spell });
-
-  dispatch({
-    type: MATCH_CAST,
-    payload: cast,
-  });
 };
 
 export const win = () => async dispatch => {

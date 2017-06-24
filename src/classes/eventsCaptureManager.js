@@ -9,10 +9,14 @@ function goToResultState(game, resultData) {
   game.state.start(STATES.RESULT);
 }
 
+const FIREBALL_LIMIT = 1;
+
 export default class EventsCaptureManager {
-  constructor(game, colonies) {
+  constructor(game, colonies, explosions) {
     this.game = game;
     this.colonies = colonies;
+    this.explosions = explosions;
+    this.fireballsUsed = 0;
 
     //  Enable input
     this.enableInput();
@@ -83,7 +87,26 @@ export default class EventsCaptureManager {
       { trailing: true }
     );
 
+    const throttledSkill = throttle(
+      ({ skillId, colonyId }) => {
+        let colony = null;
+
+        this.colonies.forEach(c => {
+          if (c.id === colonyId) {
+            colony = c;
+          }
+        });
+
+        if (skillId === 'fireball') {
+          this.destroyColony(colony);
+        }
+      },
+      100,
+      { trailing: true }
+    );
+
     actions.subscribeAttack(throttled);
+    actions.subscribeSkill(throttledSkill);
     // superAI();
     setInterval(() => {
       // TODO fake server tick
@@ -170,10 +193,32 @@ export default class EventsCaptureManager {
       });
     } else {
       sourceColony._stopShowingAttackDirection();
+
+      if (sourceColony._isNeutral() && this.fireballsUsed < FIREBALL_LIMIT) {
+        this.fireballsUsed += 1;
+
+        actions.cast({
+          skillId: 'fireball',
+          colonyId: sourceColony.id,
+        });
+
+        this.destroyColony(sourceColony);
+      }
     }
 
     this.game.input.deleteMoveCallback(this.onMouseMove, this);
     this.activeColony = null;
+  }
+
+  destroyColony(sourceColony) {
+    sourceColony._changeType(COLONY_TYPES.neutral);
+    //  And create an explosion :)
+    var explosion = this.explosions.getFirstExists(false);
+    explosion.reset(sourceColony.centerX, sourceColony.centerY);
+    explosion.anchor.setTo(0.5);
+    explosion.play('kaboom', 30, false, true);
+
+    sourceColony.kill();
   }
 
   // uodate attack direction

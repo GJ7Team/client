@@ -1,7 +1,7 @@
 import { actions, selectors } from '../store';
 import { STATES } from '../constants';
 import initScaling from 'util/initScaling';
-import { addOnlineText } from 'util/text';
+import onlinePlayers from 'util/onlinePlayers';
 
 function goToSeachMatch() {
   this.game.state.start(STATES.SEARCH_MATCH);
@@ -50,12 +50,9 @@ export default {
     );
     button2.name = 'Scoreboard';
     button2.anchor.setTo(0.5, 0.5);
-    this.playersText = addOnlineText(this.game, {
-      text: selectors.onlinePlayersSelector(),
-    });
+    this.onlinePlayers = onlinePlayers(this.game);
   },
   update: function() {
-    const online = selectors.onlinePlayersSelector();
-    this.playersText.text = `${online.length} Online - ${online}`;
+    this.onlinePlayers.update();
   },
 };

@@ -14,10 +14,11 @@ import matchReducer, {
   matchSelector,
   matchFind,
   attack,
+  cast,
   subscribeAttack,
+  subscribeSkill,
   subscribeMatchDisconnect,
   subscribeMatchTick,
-  cast,
   win,
   lost,
 } from './match';
@@ -57,8 +58,10 @@ export const actions = {
     return store.dispatch(matchFind());
   },
   attack: connect(attack),
+  cast: connect(cast),
   playersOnlineChange: connect(playersOnlineChange),
   subscribeAttack: connect(subscribeAttack),
+  subscribeSkill: connect(subscribeSkill),
   subscribeMatchDisconnect: connect(subscribeMatchDisconnect),
   subscribeMatchTick: connect(subscribeMatchTick),
   cast: connect(cast),

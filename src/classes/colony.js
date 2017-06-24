@@ -188,6 +188,11 @@ export default class Colony extends Phaser.Sprite {
       );
   }
 
+  kill() {
+    super.kill();
+    this.text.kill();
+  }
+
   _setEventsCaptureManger(manger) {
     this.eventsCaptureManger = manger;
   }
@@ -365,8 +370,6 @@ export default class Colony extends Phaser.Sprite {
 
   _canAttack() {
     return true;
-    // const isAlly = this.type === COLONY_TYPES.ally;
-    // return isAlly && this.power >= MIN_ATTACK_REQUIREMENT;
   }
 
   _colonyIsActive() {
@@ -375,6 +378,10 @@ export default class Colony extends Phaser.Sprite {
 
   _isAlly() {
     return this.type === COLONY_TYPES.ally;
+  }
+
+  _isNeutral() {
+    return this.type === COLONY_TYPES.neutral;
   }
 
   // @TODO: add num to current colony power

@@ -80,6 +80,10 @@ export default {
     addMyNameText(this.game, { text: myName });
     addEnemyNameText(this.game, { text: enemyName });
     this.onlinePlayers = onlinePlayers(this.game);
+    //  An explosion pool
+    this.explosions = this.game.add.group();
+    this.explosions.createMultiple(30, 'kaboom');
+    this.explosions.forEach(this._setupExplosions, this);
 
     this._initUserInteractions();
   },
@@ -118,9 +122,19 @@ export default {
   },
 
   _initUserInteractions() {
-    this.captureManager = new EventsCaptureManager(this.game, this.colonies);
+    this.captureManager = new EventsCaptureManager(
+      this.game,
+      this.colonies,
+      this.explosions
+    );
     this.colonies.forEach(c => {
       c._setEventsCaptureManger(this.captureManager);
     });
+  },
+
+  _setupExplosions(explosion) {
+    explosion.anchor.x = 0.5;
+    explosion.anchor.y = 0.5;
+    explosion.animations.add('kaboom');
   },
 };
