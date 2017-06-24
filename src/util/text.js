@@ -63,3 +63,26 @@ export function addEnemyNameText(game, options) {
   grd.addColorStop(1, COLORS.darkred);
   gameText.fill = grd;
 }
+
+export function addOnlineText(game, options) {
+  const gameText = game.add.text(
+    10,
+    game.world.height - 20,
+    `${options.text.length} Online - ${options.text}`
+  );
+  //  Centers the text
+  gameText.anchor.set(0);
+  gameText.align = 'center';
+
+  //  Our font + size
+  gameText.font = 'Arial';
+  gameText.fontWeight = 'bold';
+  gameText.fontSize = 15;
+  var grd = gameText.context.createLinearGradient(0, 0, 0, gameText.height);
+
+  //  Add in 2 color stops
+  grd.addColorStop(0, COLORS.red);
+  grd.addColorStop(1, COLORS.darkred);
+  gameText.fill = grd;
+  return gameText;
+}

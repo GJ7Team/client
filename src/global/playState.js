@@ -1,9 +1,15 @@
 import { actions, selectors } from '../store';
 import Colony from 'classes/colony';
-import { addMyNameText, addEnemyNameText } from 'util/text';
+import { addMyNameText, addEnemyNameText, addOnlineText } from 'util/text';
 import EventsCaptureManager from 'classes/eventsCaptureManager';
-import { STATES, WORLD_SIZE, ATTACK_DIRECTION_COLOR } from '../constants';
+import {
+  STATES,
+  WORLD_SIZE,
+  ATTACK_DIRECTION_COLOR,
+  BG_SET,
+} from '../constants';
 import initScaling from 'util/initScaling';
+import onlinePlayers from 'util/onlinePlayers';
 
 function goToMenuState() {
   this.game.state.start(STATES.MENU);
@@ -17,70 +23,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-const BG_SET = ['bg-bacteria.frag', 'bg-microflora.frag'];
-
 export default {
-  preload: function() {
-    this.button = this.game.load.spritesheet(
-      'back',
-      'assets/buttons/back.png',
-      193,
-      71
-    );
-
-    // background
-    BG_SET.forEach(bgSrc => {
-      this.game.load.shader(
-        bgSrc.replace(/.frag/, ''),
-        `assets/shaders/${bgSrc}`
-      );
-    });
-
-    this.game.load.image('background', 'assets/images/background.png');
-
-    // levels
-    this.game.load.json('level:1', 'data/level00.json');
-
-    // colonies
-    this.game.load.image(
-      'colony:neutral',
-      'assets/images/colony_color/colony_yellow.png'
-    );
-    this.game.load.image(
-      'colony:enemy',
-      'assets/images/colony_color/colony_red.png'
-    );
-    this.game.load.image(
-      'colony:ally',
-      'assets/images/colony_color/colony_green.png'
-    );
-
-    // bacteria
-    this.game.load.image(
-      'bacteria:ally',
-      'assets/images/cell_color/cell_2/cell_2_green.png'
-    );
-    this.game.load.image(
-      'bacteria:enemy',
-      'assets/images/cell_color/cell_2/cell_2_red.png'
-    );
-
-    // super bacteria
-    this.game.load.image(
-      'superBacteria:ally',
-      'assets/images/cell_color/cell_2/super_cell_2_green.png'
-    );
-    this.game.load.image(
-      'superBacteria:enemy',
-      'assets/images/cell_color/cell_2/super_cell_2_red.png'
-    );
-
-    // music
-    this.game.load.audio('game', ['assets/audio/game.mp3']);
-    this.game.load.audio('pick', ['assets/audio/pick.mp3']);
-    this.game.load.audio('kick', ['assets/audio/kick.mp3']);
-  },
-
   create: function() {
     initScaling(this.game).create();
 
@@ -116,7 +59,6 @@ export default {
     const match = selectors.match();
 
     this._loadLevel(match.map);
-    // this._loadLevel(this.game.cache.getJSON('level:1'));
 
     const backButton = this.game.add.button(
       10,
@@ -137,6 +79,7 @@ export default {
 
     addMyNameText(this.game, { text: myName });
     addEnemyNameText(this.game, { text: enemyName });
+    this.onlinePlayers = onlinePlayers(this.game);
 
     this._initUserInteractions();
   },
@@ -144,6 +87,7 @@ export default {
   update: function() {
     this.captureManager.update();
     this.filter.update();
+    this.onlinePlayers.update();
   },
 
   render: function() {
@@ -165,15 +109,11 @@ export default {
       this.game,
       colony.x,
       colony.y,
-      colony.image,
       colony.type,
       this.bitmapData,
       colony.id
     );
 
-    this.game.physics.arcade.enable(sprite);
-    sprite.anchor.setTo(0, 0);
-    sprite.body.immovable = true;
     this.colonies.add(sprite);
   },
 

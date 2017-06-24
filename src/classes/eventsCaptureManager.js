@@ -61,24 +61,27 @@ export default class EventsCaptureManager {
       console.error('PLAYER LEFT. TODO YOU WIN');
     });
 
-    
-    const throttled = throttle(({ fromColonyId, toColonyId, attackPower }) => {
-      let fromColony = null;
-      let toColony = null;
+    const throttled = throttle(
+      ({ fromColonyId, toColonyId, attackPower }) => {
+        let fromColony = null;
+        let toColony = null;
 
-      this.colonies.forEach(c => {
-        if (c.id === fromColonyId) {
-          fromColony = c;
-        }
-        if (c.id === toColonyId) {
-          toColony = c;
-        }
-      });
+        this.colonies.forEach(c => {
+          if (c.id === fromColonyId) {
+            fromColony = c;
+          }
+          if (c.id === toColonyId) {
+            toColony = c;
+          }
+        });
 
-      fromColony._enemyAttack(toColony, {
-        attackPower,
-      });
-    }, 100, { 'trailing': true });
+        fromColony._enemyAttack(toColony, {
+          attackPower,
+        });
+      },
+      100,
+      { trailing: true }
+    );
 
     actions.subscribeAttack(throttled);
     // superAI();
@@ -192,14 +195,9 @@ export default class EventsCaptureManager {
   getTargetColony(pointer) {
     for (let i = 0, len = this.colonies.length; i < len; i++) {
       const colony = this.colonies.getAt(i);
-      const colonyRectangle = new Phaser.Rectangle(
-        colony.x,
-        colony.y,
-        colony.width,
-        colony.height
-      );
-
-      if (Phaser.Rectangle.contains(colonyRectangle, pointer.x, pointer.y)) {
+      if (
+        Phaser.Rectangle.contains(colony.colonyRectangle, pointer.x, pointer.y)
+      ) {
         return colony;
       }
     }

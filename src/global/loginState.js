@@ -21,18 +21,6 @@ const login = async function() {
 };
 
 export default {
-  preload: function() {
-    const game = this.game;
-    this.game.load.image('background', 'assets/images/background.png');
-    this.game.load.image('nick_input', 'assets/buttons/nick_input.png');
-    this.button = game.load.spritesheet(
-      'button',
-      'assets/buttons/login.png',
-      193,
-      71
-    );
-  },
-
   update: function() {
     this.input.update();
 

@@ -79,7 +79,7 @@ export const attack = ({
   });
 };
 
-export const subscribeAttack = dispatch => res => {
+export const subscribeAttack = res => dispatch => {
   if (!matchEmmiter) {
     throw new Error('matchEmmiter is not defined');
   }
@@ -94,7 +94,7 @@ export const subscribeAttack = dispatch => res => {
   });
 };
 
-export const subscribeMatchDisconnect = dispatch => res => {
+export const subscribeMatchDisconnect = res => dispatch => {
   if (!matchEmmiter) {
     throw new Error('matchEmmiter is not defined');
   }
@@ -102,7 +102,7 @@ export const subscribeMatchDisconnect = dispatch => res => {
   matchSocket.on('disconnect', res);
 };
 
-export const subscribeMatchTick = dispatch => res => {
+export const subscribeMatchTick = res => dispatch => {
   if (!matchEmmiter) {
     throw new Error('matchEmmiter is not defined');
   }

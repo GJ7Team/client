@@ -1,6 +1,7 @@
-import { actions } from '../store';
+import { actions, selectors } from '../store';
 import { STATES } from '../constants';
 import initScaling from 'util/initScaling';
+import { addOnlineText } from 'util/text';
 
 function goToSeachMatch() {
   this.game.state.start(STATES.SEARCH_MATCH);
@@ -19,13 +20,6 @@ function goToScoreboardState() {
 }
 
 export default {
-  preload: function() {
-    const game = this.game;
-    this.game.load.image('background', 'assets/images/background.png');
-    this.game.load.image('play', 'assets/buttons/play.png');
-    this.game.load.image('scoreboard', 'assets/buttons/scoreboard.png');
-  },
-
   create: function() {
     const game = this.game;
 
@@ -56,5 +50,12 @@ export default {
     );
     button2.name = 'Scoreboard';
     button2.anchor.setTo(0.5, 0.5);
+    this.playersText = addOnlineText(this.game, {
+      text: selectors.onlinePlayersSelector(),
+    });
+  },
+  update: function() {
+    const online = selectors.onlinePlayersSelector();
+    this.playersText.text = `${online.length} Online - ${online}`;
   },
 };

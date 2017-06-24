@@ -3,10 +3,13 @@ export const STATES = {
   VIDEO: 'video',
   MENU: 'menuState',
   LOGIN: 'loginState',
+  LOAD: 'loadState',
   RESULT: 'resultState',
   SCOREBOARD: 'scoreState',
   SEARCH_MATCH: 'search_match',
 };
+
+export const BG_SET = ['bg-bacteria.frag', 'bg-microflora.frag'];
 
 export const COLONY_TYPES = {
   ally: 'ally',

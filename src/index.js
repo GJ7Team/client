@@ -5,8 +5,12 @@ import loginState from './global/loginState';
 import resultState from './global/resultState';
 import scoreState from './global/scoreState';
 import searchState from './global/searchState';
+import loadState from './global/loadState';
+import bootState from './global/bootState';
 import PhaserInput from 'lib/PhaserInput';
 import { STATES } from './constants';
+import { getSocket } from 'store/api';
+import { actions } from 'store';
 
 import './store';
 
@@ -34,6 +38,16 @@ start(() => {
   game.state.add(STATES.RESULT, resultState);
   game.state.add(STATES.SCOREBOARD, scoreState);
   game.state.add(STATES.SEARCH_MATCH, searchState);
-  game.state.start(STATES.LOGIN);
+  game.state.add('loadState', loadState);
+  game.state.add('bootState', bootState);
+  game.state.start('bootState');
   // game.state.start(STATES.RESULT);
+
+  initSubscriptions();
 });
+
+function initSubscriptions() {
+  const socket = getSocket();
+
+  socket.on('playersOnline', online => actions.playersOnlineChange(online));
+}

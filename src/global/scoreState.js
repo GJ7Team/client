@@ -5,25 +5,15 @@ import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 import { actions, selectors } from '../store';
 import { STATES, COLORS } from '../constants';
-import { addGradientText } from 'util/text';
+import { addGradientText, addOnlineText } from 'util/text';
 import initScaling from 'util/initScaling';
+import onlinePlayers from 'util/onlinePlayers';
 
 function goToMenuState() {
   this.game.state.start(STATES.MENU);
 }
 
 export default {
-  preload: function() {
-    this.game.load.image('background', 'assets/images/background.png');
-
-    this.button = this.game.load.spritesheet(
-      'back',
-      'assets/buttons/back.png',
-      193,
-      71
-    );
-  },
-
   create: function() {
     initScaling(this.game).create();
 
@@ -52,6 +42,7 @@ export default {
     backButton.scale.setTo(0.3, 0.3);
 
     this._loadRatings();
+    this.onlinePlayers = onlinePlayers(this.game);
   },
 
   _loadRatings() {
@@ -174,7 +165,7 @@ export default {
         score,
         name,
       };
-    }).sort((a, b) => a.score < b.score);
+    }).sort((a, b) => b.score - a.score);
 
     const normalized = sorted.map((user, index) => ({
       index: index + 1,
@@ -189,9 +180,7 @@ export default {
   },
 
   update: function() {
-    // if (this.game.input.activePointer.isDown) {
-    //   this.game.state.start(STATES.MENU);
-    // }
+    this.onlinePlayers.update();
   },
 };
 

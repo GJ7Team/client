@@ -137,10 +137,13 @@ function createSuperBacteria(x, y, game, bacteries, target, isAlly, power) {
 }
 
 export default class Colony extends Phaser.Sprite {
-  constructor(game, x, y, imageName, type, bitmapData, id) {
+  constructor(game, x, y, type, bitmapData, id) {
     const image = COLONY_TYPE_TO_IMAGE[type];
-    super(game, x, y, imageName);
-
+    super(game, x, y, image);
+    game.physics.arcade.enable(this);
+    this.anchor.setTo(0.5, 0.5);
+    this.scale.setTo(0.2, 0.2);
+    this.body.immovable = true;
     this.id = id;
 
     this.power = type === COLONY_TYPES.neutral
@@ -149,10 +152,10 @@ export default class Colony extends Phaser.Sprite {
     this.type = type;
     this.bitmapData = bitmapData;
     this.center = {
-      x: this.x + this.width / 2,
-      y: this.y + this.height / 2,
+      x: this.centerX,
+      y: this.centerY,
     };
-    this.radius = Math.floor(this.width / 2) + RADIUS_DELTA;
+    this.radius = Math.floor(this.width / 2);
     this.graphicsColor = ATTACK_DIRECTION_COLOR;
 
     this._createCounter();
@@ -164,6 +167,25 @@ export default class Colony extends Phaser.Sprite {
     this.colides = [];
     this.enemyColides = [];
     this.eventsCaptureManger = null;
+
+    this.colonyRectangle = new Phaser.Rectangle(
+      this.x - this.offsetX,
+      this.y - this.offsetY,
+      this.width,
+      this.height
+    );
+
+    this.game.add
+      .tween(this.scale)
+      .to(
+        { x: 0.25, y: 0.25 },
+        2000,
+        Phaser.Easing.Linear.None,
+        true,
+        0,
+        1000,
+        true
+      );
   }
 
   _setEventsCaptureManger(manger) {
@@ -386,7 +408,7 @@ export default class Colony extends Phaser.Sprite {
 
   _renderStartingDirection() {
     this.bitmapData.clear();
-    this.bitmapData.ctx.beginPath();
+    // this.bitmapData.ctx.beginPath();
     this.bitmapData.ctx.beginPath();
     this.bitmapData.ctx.moveTo(this.center.x, this.center.y);
     this.bitmapData.ctx.lineTo(
@@ -415,8 +437,8 @@ export default class Colony extends Phaser.Sprite {
     const targetRadius = halfTargetWidth + RADIUS_DELTA;
     this._renderStartingDirection();
     this.bitmapData.circle(
-      target.x + halfTargetWidth,
-      target.y + halfTargetHeight,
+      target.x,
+      target.y,
       targetRadius,
       this.graphicsColor
     );

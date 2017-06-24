@@ -3,7 +3,13 @@ import { compose, createStore, combineReducers, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import loggerMiddleware from 'redux-logger';
 
-import gameReducer, { gameSelector, gameEnter, myNameSelector } from './game';
+import gameReducer, {
+  gameSelector,
+  gameEnter,
+  myNameSelector,
+  onlinePlayersSelector,
+  playersOnlineChange,
+} from './game';
 import matchReducer, {
   matchSelector,
   matchFind,
@@ -31,10 +37,18 @@ export default cb => {
   return store.subscribe(cb);
 };
 
+function connect(action) {
+  return (...args) => {
+    const result = action(...args);
+    if (typeof result === 'function') {
+      return result(store.dispatch);
+    }
+    return store.dispatch(result);
+  };
+}
+
 export const actions = {
-  gameEnter: (...args) => {
-    return store.dispatch(gameEnter(...args));
-  },
+  gameEnter: connect(gameEnter),
   matchFind: subscribe => {
     store.subscribe(() => {
       selectors.match();
@@ -42,27 +56,14 @@ export const actions = {
 
     return store.dispatch(matchFind());
   },
-  attack: (...args) => {
-    return store.dispatch(attack(...args));
-  },
-  subscribeAttack(res) {
-    subscribeAttack(store.dispatch)(res);
-  },
-  subscribeMatchDisconnect(res) {
-    subscribeMatchDisconnect(store.dispatch)(res);
-  },
-  subscribeMatchTick(res) {
-    subscribeMatchTick(store.dispatch)(res);
-  },
-  cast: (...args) => {
-    return store.dispatch(cast(...args));
-  },
-  win: (...args) => {
-    return store.dispatch(win(...args));
-  },
-  lost: (...args) => {
-    return store.dispatch(lost(...args));
-  },
+  attack: connect(attack),
+  playersOnlineChange: connect(playersOnlineChange),
+  subscribeAttack: connect(subscribeAttack),
+  subscribeMatchDisconnect: connect(subscribeMatchDisconnect),
+  subscribeMatchTick: connect(subscribeMatchTick),
+  cast: connect(cast),
+  win: connect(win),
+  lost: connect(lost),
 };
 
 export const selectors = {
@@ -74,5 +75,8 @@ export const selectors = {
   },
   getMyName() {
     return myNameSelector(store.getState());
+  },
+  onlinePlayersSelector() {
+    return onlinePlayersSelector(store.getState());
   },
 };

@@ -1,14 +1,13 @@
 import values from 'lodash/valuesIn';
-import { actions } from '../store';
+import { actions, selectors } from '../store';
 import { STATES, COLORS } from '../constants';
-import { addGradientText } from 'util/text';
+import { addGradientText, addOnlineText } from 'util/text';
 import gameState from 'services/gameState';
 import initScaling from 'util/initScaling';
+import onlinePlayers from 'util/onlinePlayers';
 
 export default {
   preload: function() {
-    this.game.load.image('background', 'assets/images/background.png');
-
     this._statistics = gameState.getStatistics();
     gameState.resetStatistics();
   },
@@ -95,9 +94,11 @@ export default {
     );
     scoresTextEnemy.parseList(values(enemy));
     scoresTextEnemy.anchor.set(0.5, 0, 5);
+    this.onlinePlayers = onlinePlayers(this.game);
   },
 
   update: function() {
+    this.onlinePlayers.update();
     if (this.game.input.activePointer.isDown) {
       this.game.state.start(STATES.MENU);
     }
