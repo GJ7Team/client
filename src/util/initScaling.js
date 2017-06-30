@@ -6,7 +6,7 @@ export default function initScaling(game) {
   function create() {
     console.warn('game.scale', game.scale);
     // game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
-    // game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     // Stretch to fill
     // game.input.onDown.add(toggleFullScreen, this);
   }

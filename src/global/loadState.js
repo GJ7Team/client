@@ -7,6 +7,7 @@ function goToLogin() {
 
 export default {
   preload: function() {
+    initScaling(this.game).create();
     const colony = this.game.add.sprite(
       this.game.world.centerX,
       this.game.world.centerY,

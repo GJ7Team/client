@@ -7,6 +7,7 @@ function goToLoad() {
 
 export default {
   preload: function() {
+    initScaling(this.game).create();
     this.game.load.image('colony', 'assets/images/colony/blue.png');
   },
 
